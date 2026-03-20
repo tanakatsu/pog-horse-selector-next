@@ -263,6 +263,48 @@ CREATE POLICY "horses_delete" ON public.horses FOR DELETE USING ((SELECT auth.ui
   "test:watch": "vitest",
   "test:coverage": "vitest run --coverage"
   ```
+- **`vitest.config.ts`** — Vitest 設定ファイル
+  ```ts
+  import { defineConfig } from 'vitest/config'
+  import react from '@vitejs/plugin-react'
+  import path from 'path'
+
+  export default defineConfig({
+    plugins: [react()],
+    test: {
+      environment: 'jsdom',
+      globals: true,
+      setupFiles: ['./src/test/setup.ts'],
+    },
+    resolve: {
+      alias: { '@': path.resolve(__dirname, './src') },
+    },
+  })
+  ```
+- **`src/test/setup.ts`** — jest-dom マッチャーの読み込み
+  ```ts
+  import '@testing-library/jest-dom'
+  ```
+- **`playwright.config.ts`** — Playwright 設定ファイル
+  ```ts
+  import { defineConfig, devices } from '@playwright/test'
+
+  export default defineConfig({
+    testDir: './e2e',
+    fullyParallel: true,
+    retries: process.env.CI ? 2 : 0,
+    use: {
+      baseURL: 'http://localhost:3000',
+      trace: 'on-first-retry',
+    },
+    projects: [{ name: 'chromium', use: { ...devices['Desktop Chrome'] } }],
+    webServer: {
+      command: 'npm run dev',
+      url: 'http://localhost:3000',
+      reuseExistingServer: !process.env.CI,
+    },
+  })
+  ```
 
 #### アプリ基盤
 
