@@ -1,0 +1,42 @@
+{
+  "enabledPlugins": {
+    "voltagent-core-dev@voltagent-subagents": true,
+    "voltagent-lang@voltagent-subagents": true,
+    "voltagent-qa-sec@voltagent-subagents": true
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path // empty' | { read -r f; [[ \"$f\" =~ \\.(ts|tsx)$ ]] || exit 0; npm run format && npm run lint; }",
+            "statusMessage": "Running format & lint..."
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "osascript -e 'display notification \"Claude Code needs your attention\" with title \"Claude Code\"'"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Check if all tasks are complete. Respond ONLY with raw JSON, no markdown, no code fences. Use {\"decision\": \"proceed\"} if complete, or {\"decision\": \"block\", \"reason\": \"what remains to be done\"} if not."
+          }
+        ]
+      }
+    ]
+  }
+}
