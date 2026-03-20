@@ -107,8 +107,9 @@ chore/<作業内容>   # 設定・リファクタ（例: chore/setup-eslint）
 
 ## 参考資料
 
-- 要件定義書: Spec.md
-- テスト計画書: TEST_DEFINITION.md
+- 要件定義書: docs/Spec.md
+- テスト計画書: docs/TEST_DEFINITION.md
+- 実装計画書: docs/PLAN.md
 
 ---
 
