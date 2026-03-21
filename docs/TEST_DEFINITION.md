@@ -419,7 +419,18 @@ E2EテストはSupabaseのテスト用クラウドプロジェクトを使用す
    - 無料枠で2プロジェクトまで作成可能
 
 2. **スキーマをコピー**
-   - 本番プロジェクトの SQL Editor でスキーマを取得し、テストプロジェクトの SQL Editor で実行
+   - `scripts/supabase-setup.sh` を使ってマイグレーションファイルを取得し、テストプロジェクトに適用する
+
+   ```bash
+   # 本番プロジェクトのスキーマをマイグレーションファイルとして取得
+   npx supabase login
+   SUPABASE_PROJECT_REF=<本番project-ref> ./scripts/supabase-setup.sh
+
+   # テストプロジェクトにスキーマを適用
+   npx supabase db push --db-url "postgresql://postgres:<password>@db.<テストproject-ref>.supabase.co:5432/postgres"
+   ```
+
+   > `project-ref` は Supabase ダッシュボードの Project Settings → General に記載されている。
 
 3. **テストユーザーを作成**
    - テストプロジェクトの Authentication → Users → Add user
