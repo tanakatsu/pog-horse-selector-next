@@ -109,7 +109,7 @@ describe('sortedOwners selector', () => {
 })
 
 describe('ownerHorseCount selector', () => {
-  it('オーナーAが3頭の馬を持つ場合 { "オーナーA": 3 } を返す', () => {
+  it('オーナーAが3頭の馬を持つ場合 owner.id をキーとして { 1: 3 } を返す', () => {
     const owner = makeOwner({ id: 1, name: 'オーナーA' })
     const horses = [
       makeHorse({ id: 1, owner_id: 1, po_order_no: 1 }),
@@ -118,12 +118,12 @@ describe('ownerHorseCount selector', () => {
     ]
     usePogStore.setState({ owners: [owner], horses })
     const counts = ownerHorseCount(usePogStore.getState())
-    expect(counts).toEqual({ オーナーA: 3 })
+    expect(counts).toEqual({ 1: 3 })
   })
 })
 
 describe('ownerHorseLastNo selector', () => {
-  it('オーナーAの最大 po_order_no が 3 の場合 { "オーナーA": 3 } を返す', () => {
+  it('オーナーAの最大 po_order_no が 3 の場合 owner.id をキーとして { 1: 3 } を返す', () => {
     const owner = makeOwner({ id: 1, name: 'オーナーA' })
     const horses = [
       makeHorse({ id: 1, owner_id: 1, po_order_no: 1 }),
@@ -132,7 +132,7 @@ describe('ownerHorseLastNo selector', () => {
     ]
     usePogStore.setState({ owners: [owner], horses })
     const lastNos = ownerHorseLastNo(usePogStore.getState())
-    expect(lastNos).toEqual({ オーナーA: 3 })
+    expect(lastNos).toEqual({ 1: 3 })
   })
 })
 

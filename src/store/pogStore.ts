@@ -73,34 +73,26 @@ export function sortedOwners(state: PogStore): Owner[] {
   })
 }
 
-export function ownerHorseCount(state: PogStore): Record<string, number> {
-  const ownerMap = new Map<number, string>()
-  for (const owner of state.owners) {
-    ownerMap.set(owner.id, owner.name)
-  }
-
-  const result: Record<string, number> = {}
+// Keyed by owner.id (number) to be safe against duplicate owner names
+export function ownerHorseCount(state: PogStore): Record<number, number> {
+  const ownerIds = new Set<number>(state.owners.map((o) => o.id))
+  const result: Record<number, number> = {}
   for (const horse of state.horses) {
-    const ownerName = ownerMap.get(horse.owner_id)
-    if (ownerName === undefined) continue
-    result[ownerName] = (result[ownerName] ?? 0) + 1
+    if (!ownerIds.has(horse.owner_id)) continue
+    result[horse.owner_id] = (result[horse.owner_id] ?? 0) + 1
   }
   return result
 }
 
-export function ownerHorseLastNo(state: PogStore): Record<string, number> {
-  const ownerMap = new Map<number, string>()
-  for (const owner of state.owners) {
-    ownerMap.set(owner.id, owner.name)
-  }
-
-  const result: Record<string, number> = {}
+// Keyed by owner.id (number) to be safe against duplicate owner names
+export function ownerHorseLastNo(state: PogStore): Record<number, number> {
+  const ownerIds = new Set<number>(state.owners.map((o) => o.id))
+  const result: Record<number, number> = {}
   for (const horse of state.horses) {
-    const ownerName = ownerMap.get(horse.owner_id)
-    if (ownerName === undefined) continue
-    const current = result[ownerName]
+    if (!ownerIds.has(horse.owner_id)) continue
+    const current = result[horse.owner_id]
     if (current === undefined || horse.po_order_no > current) {
-      result[ownerName] = horse.po_order_no
+      result[horse.owner_id] = horse.po_order_no
     }
   }
   return result
