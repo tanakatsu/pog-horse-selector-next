@@ -51,7 +51,7 @@
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "Check if all tasks are complete. Respond ONLY with raw JSON, no markdown, no code fences. Use {\"decision\": \"proceed\"} if complete, or {\"decision\": \"block\", \"reason\": \"what remains to be done\"} if not."
+            "prompt": "Output ONLY a JSON object. No markdown. No code fences. No explanation. No other text whatsoever.\nIf there are no incomplete tasks in this conversation, output exactly: {\"decision\":\"proceed\"}\nIf there are incomplete tasks, output exactly: {\"decision\":\"block\",\"reason\":\"<brief description of what remains>\"}\nYour entire response must be valid JSON and nothing else."
           }
         ]
       }
