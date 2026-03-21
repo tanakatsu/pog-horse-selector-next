@@ -408,27 +408,53 @@ npm run test:coverage
 
 ### E2Eテスト
 
-```bash
-# ローカルE2E（事前に開発サーバーを起動）
-npm run dev &
-npx playwright test
+#### テスト環境
 
-# UIモードで実行（デバッグ用）
-npx playwright test --ui
+E2EテストはSupabaseのテスト用クラウドプロジェクトを使用する。本番プロジェクトとは別に専用プロジェクトを作成すること（テストデータの混入・本番データ破壊防止のため）。
 
-# 特定のテストのみ実行
-npx playwright test e2e/auth.spec.ts
+#### 初回セットアップ
+
+1. **Supabaseでテスト用プロジェクトを作成**
+   - [supabase.com](https://supabase.com) → New Project（例: `pog-horse-selector-test`）
+   - 無料枠で2プロジェクトまで作成可能
+
+2. **スキーマをコピー**
+   - 本番プロジェクトの SQL Editor でスキーマを取得し、テストプロジェクトの SQL Editor で実行
+
+3. **テストユーザーを作成**
+   - テストプロジェクトの Authentication → Users → Add user
+
+4. **`.env.test` を作成**（`.gitignore` に追加済みであること）
+
 ```
-
-### E2Eテスト用の環境変数（`.env.test`）
-
-```
-NEXT_PUBLIC_SUPABASE_URL=<test用supabaseのURL>
-NEXT_PUBLIC_SUPABASE_ANON_KEY=<test用supabaseのANON_KEY>
-NEXT_PUBLIC_TARGET_YEAR=2025
+NEXT_PUBLIC_SUPABASE_URL=https://xxxxxxxx.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJxxxxxxxx
+NEXT_PUBLIC_TARGET_YEAR=2026
 TEST_USER_EMAIL=test@example.com
 TEST_USER_PASSWORD=testpassword123
 ```
+
+#### 実行コマンド
+
+```bash
+# 環境変数を読み込んで実行
+npx dotenv -e .env.test -- npx playwright test
+
+# UIモードで実行（デバッグ用）
+npx dotenv -e .env.test -- npx playwright test --ui
+
+# ヘッドありブラウザで実行（動作確認用）
+npx dotenv -e .env.test -- npx playwright test --headed
+
+# 特定のファイルのみ実行
+npx dotenv -e .env.test -- npx playwright test e2e/auth.spec.ts
+```
+
+#### テストデータについて
+
+- `group.spec.ts` などは `Date.now()` を使ったユニーク名でデータを作成するため、テスト後もDBにデータが残る
+- テスト用プロジェクトのため実害はないが、定期的にSupabaseの SQL Editor で `TRUNCATE` してもよい
+- `TEST_USER_EMAIL` / `TEST_USER_PASSWORD` が未設定の場合、Supabase接続が必要なテストは自動スキップされる
 
 ---
 
