@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
 import { getSupabaseServerClient } from '@/lib/supabase/server'
+import DataProvider from '@/components/layout/DataProvider'
 
 export default async function ProtectedLayout({ children }: { children: React.ReactNode }) {
   const supabase = await getSupabaseServerClient()
@@ -11,5 +12,5 @@ export default async function ProtectedLayout({ children }: { children: React.Re
     redirect('/login')
   }
 
-  return <>{children}</>
+  return <DataProvider>{children}</DataProvider>
 }
