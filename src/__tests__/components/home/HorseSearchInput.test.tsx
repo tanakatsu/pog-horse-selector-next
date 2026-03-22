@@ -6,13 +6,13 @@ import type { Owner } from '@/types'
 
 vi.mock('@/data/horse_catalogue.json', () => ({
   default: [
-    { horse_id: '2025000001', name: 'テスト馬1', sire: 'テスト父1', mare: 'キズナメア' },
-    { horse_id: '2025000002', name: 'テスト馬2', sire: 'テスト父2', mare: 'キズナメア2' },
-    { horse_id: '2025000003', name: 'テスト馬3', sire: 'テスト父3', mare: 'キズナメア3' },
-    { horse_id: '2025000004', name: 'テスト馬4', sire: 'テスト父4', mare: 'キズナメア4' },
-    { horse_id: '2025000005', name: 'テスト馬5', sire: 'テスト父5', mare: 'キズナメア5' },
-    { horse_id: '2025000006', name: 'テスト馬6', sire: 'テスト父6', mare: 'ディープメア' },
-    { horse_id: '2026000001', name: '別年度馬', sire: 'テスト父', mare: 'キズナメア別年' },
+    { id: '2025000001', name: 'テスト馬1', sire: 'テスト父1', mare: 'キズナメア', sire_count: 1 },
+    { id: '2025000002', name: 'テスト馬2', sire: 'テスト父2', mare: 'キズナメア2', sire_count: 1 },
+    { id: '2025000003', name: 'テスト馬3', sire: 'テスト父3', mare: 'キズナメア3', sire_count: 1 },
+    { id: '2025000004', name: 'テスト馬4', sire: 'テスト父4', mare: 'キズナメア4', sire_count: 1 },
+    { id: '2025000005', name: 'テスト馬5', sire: 'テスト父5', mare: 'キズナメア5', sire_count: 1 },
+    { id: '2025000006', name: 'テスト馬6', sire: 'テスト父6', mare: 'ディープメア', sire_count: 1 },
+    { id: '2026000001', name: '別年度馬', sire: 'テスト父', mare: 'キズナメア別年', sire_count: 1 },
   ],
 }))
 
@@ -137,7 +137,7 @@ describe('HorseSearchInput', () => {
     await user.click(item)
 
     expect(onSelect).toHaveBeenCalledWith(
-      expect.objectContaining({ horse_id: '2025000001', mare: 'キズナメア' }),
+      expect.objectContaining({ id: '2025000001', mare: 'キズナメア' }),
     )
   })
 })

@@ -40,14 +40,13 @@ export default function HorseSearchInput({ onSelect, selectedMares, maxSuggestio
 
   const isDisabled = owners.length === 0 || loading
   const targetYear = String(getTargetYear())
-  const catalogueCount = catalogue.filter((h) => h.horse_id.startsWith(targetYear)).length
+  const catalogueCount = catalogue.filter((h) => h.id.startsWith(targetYear)).length
 
   const suggestions = query
     ? catalogue
         .filter(
           (h) =>
-            h.horse_id.startsWith(targetYear) &&
-            h.mare.toLowerCase().startsWith(query.toLowerCase()),
+            h.id.startsWith(targetYear) && h.mare.toLowerCase().startsWith(query.toLowerCase()),
         )
         .slice(0, maxSuggestions)
     : []
@@ -101,8 +100,8 @@ export default function HorseSearchInput({ onSelect, selectedMares, maxSuggestio
               <CommandGroup>
                 {suggestions.map((horse) => (
                   <CommandItem
-                    key={horse.horse_id}
-                    value={horse.horse_id}
+                    key={horse.id}
+                    value={horse.id}
                     onSelect={() => handleSelect(horse)}
                     data-checked={selectedMares.includes(horse.mare) ? 'true' : undefined}
                   >

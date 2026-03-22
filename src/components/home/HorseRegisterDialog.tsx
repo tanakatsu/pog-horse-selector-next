@@ -63,7 +63,7 @@ export default function HorseRegisterDialog({
     if (open) {
       if (catalogHorse) {
         form.reset({
-          horse_id: catalogHorse.horse_id,
+          horse_id: catalogHorse.id,
           name: catalogHorse.name,
           sire: catalogHorse.sire,
           mare: catalogHorse.mare,

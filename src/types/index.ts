@@ -21,8 +21,9 @@ export type Horse = {
 }
 
 export type CatalogHorse = {
-  horse_id: string
+  id: string
   name: string
   sire: string
   mare: string
+  sire_count: number
 }

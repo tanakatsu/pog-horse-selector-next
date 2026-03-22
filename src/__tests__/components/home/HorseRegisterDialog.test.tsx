@@ -52,10 +52,11 @@ beforeEach(() => {
 describe('HorseRegisterDialog', () => {
   it('カタログから選択時はフィールドに自動入力される', () => {
     const catalogHorse = {
-      horse_id: '2025105006',
+      id: '2025105006',
       name: 'キズナの2025',
       sire: 'キズナ',
       mare: 'テストメア',
+      sire_count: 1,
     }
 
     render(
