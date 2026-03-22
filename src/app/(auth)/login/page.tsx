@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { loginSchema, type LoginInput, getAuthErrorMessage } from '@/lib/validations/auth'
+import { APP_TITLE } from '@/lib/constants'
 import { getSupabaseClient } from '@/lib/supabase/client'
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -46,6 +47,9 @@ export default function LoginPage() {
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
+        <p className="text-sm font-semibold tracking-widest text-muted-foreground uppercase">
+          {APP_TITLE}
+        </p>
         <CardTitle className="text-xl">ログイン</CardTitle>
       </CardHeader>
       <CardContent>

@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { signupSchema, type SignupInput, getAuthErrorMessage } from '@/lib/validations/auth'
+import { APP_TITLE } from '@/lib/constants'
 import { getSupabaseClient } from '@/lib/supabase/client'
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -52,6 +53,9 @@ export default function SignupPage() {
     return (
       <Card className="w-full max-w-md">
         <CardHeader>
+          <p className="text-sm font-semibold tracking-widest text-muted-foreground uppercase">
+            {APP_TITLE}
+          </p>
           <CardTitle className="text-xl">確認メールを送信しました</CardTitle>
         </CardHeader>
         <CardContent>
@@ -72,6 +76,9 @@ export default function SignupPage() {
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
+        <p className="text-sm font-semibold tracking-widest text-muted-foreground uppercase">
+          {APP_TITLE}
+        </p>
         <CardTitle className="text-xl">アカウント作成</CardTitle>
       </CardHeader>
       <CardContent>
