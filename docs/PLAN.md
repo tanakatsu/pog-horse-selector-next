@@ -68,7 +68,7 @@ npx playwright install --with-deps chromium
 ```
 # .env.local
 NEXT_PUBLIC_SUPABASE_URL=https://xxxx.supabase.co
-NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=eyJxxxx
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_xxxxxxxx
 NEXT_PUBLIC_TARGET_YEAR=2026
 ```
 

@@ -419,18 +419,29 @@ E2EテストはSupabaseのテスト用クラウドプロジェクトを使用す
    - 無料枠で2プロジェクトまで作成可能
 
 2. **スキーマをコピー**
-   - `scripts/supabase-setup.sh` を使ってマイグレーションファイルを取得し、テストプロジェクトに適用する
 
    ```bash
-   # 本番プロジェクトのスキーマをマイグレーションファイルとして取得
+   # ① ローカルにマイグレーションファイルがない場合: 本番プロジェクトから取得
    npx supabase login
    SUPABASE_PROJECT_REF=<本番project-ref> ./scripts/supabase-setup.sh
 
-   # テストプロジェクトにスキーマを適用
-   npx supabase db push --db-url "postgresql://postgres:<password>@db.<テストproject-ref>.supabase.co:5432/postgres"
+   # ② テストプロジェクトにリンク（マイグレーション履歴の不一致エラーが出た場合は③へ）
+   SUPABASE_PROJECT_REF=<テストproject-ref> ./scripts/supabase-setup.sh
    ```
 
    > `project-ref` は Supabase ダッシュボードの Project Settings → General に記載されている。
+
+   **マイグレーション履歴の不一致エラーが出た場合:**
+
+   ```bash
+   # エラーメッセージに表示されたバージョンを applied に修正
+   npx supabase migration repair --status applied <version1>
+   npx supabase migration repair --status applied <version2>
+   ```
+
+   **テーブルをテストプロジェクトに作成:**
+
+   `npx supabase db push` はマイグレーション履歴を参照するため、新規プロジェクトでは実際のSQLが実行されないことがある。その場合は Supabase ダッシュボードの **SQL Editor** で `supabase/migrations/` 内の最新の `*.sql` ファイルの内容を貼り付けて実行する。
 
 3. **テストユーザーを作成**
    - テストプロジェクトの Authentication → Users → Add user
@@ -439,7 +450,7 @@ E2EテストはSupabaseのテスト用クラウドプロジェクトを使用す
 
 ```
 NEXT_PUBLIC_SUPABASE_URL=https://xxxxxxxx.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJxxxxxxxx
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_xxxxxxxx
 NEXT_PUBLIC_TARGET_YEAR=2026
 TEST_USER_EMAIL=test@example.com
 TEST_USER_PASSWORD=testpassword123

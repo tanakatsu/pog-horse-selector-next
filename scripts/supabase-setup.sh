@@ -36,14 +36,23 @@ fi
 echo "==> プロジェクトにリンクします..."
 npx supabase link --project-ref "$PROJECT_REF"
 
-# リモートのスキーマをマイグレーションファイルとして取得
-echo "==> リモートのスキーマを取得します..."
-npx supabase db pull
-
-echo ""
-echo "==> セットアップ完了！"
-echo ""
-echo "以降のコマンド:"
-echo "  新規マイグレーション作成: npx supabase migration new <name>"
-echo "  ローカルDBに適用:         npx supabase db push"
-echo "  リモートDBに適用:         npx supabase db push --db-url \$DATABASE_URL"
+# ローカルにマイグレーションファイルが存在する場合はスキーマ取得をスキップ
+if ls supabase/migrations/*.sql 1>/dev/null 2>&1; then
+  echo "==> マイグレーションファイルが既に存在します。スキーマ取得をスキップします。"
+  echo ""
+  echo "==> セットアップ完了！"
+  echo ""
+  echo "テストプロジェクトへのテーブル作成:"
+  echo "  1. マイグレーション履歴の不一致エラーが出た場合:"
+  echo "     npx supabase migration repair --status applied <version>"
+  echo "  2. Supabase SQL Editor で supabase/migrations/ 内の最新の *.sql を実行"
+else
+  echo "==> リモートのスキーマを取得します..."
+  npx supabase db pull
+  echo ""
+  echo "==> セットアップ完了！"
+  echo ""
+  echo "以降のコマンド:"
+  echo "  新規マイグレーション作成: npx supabase migration new <name>"
+  echo "  マイグレーション一覧:     npx supabase migration list"
+fi
