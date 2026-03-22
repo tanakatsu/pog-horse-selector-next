@@ -5,6 +5,7 @@ import { Check } from 'lucide-react'
 import { usePogStore } from '@/store/pogStore'
 import type { CatalogHorse } from '@/types'
 import rawCatalogue from '@/data/horse_catalogue.json'
+import { getTargetYear } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
   Command,
@@ -38,10 +39,15 @@ export default function HorseSearchInput({ onSelect, selectedMares, maxSuggestio
   }, [])
 
   const isDisabled = owners.length === 0 || loading
+  const targetYear = String(getTargetYear())
 
   const suggestions = query
     ? catalogue
-        .filter((h) => h.mare.toLowerCase().startsWith(query.toLowerCase()))
+        .filter(
+          (h) =>
+            h.horse_id.startsWith(targetYear) &&
+            h.mare.toLowerCase().startsWith(query.toLowerCase()),
+        )
         .slice(0, maxSuggestions)
     : []
 

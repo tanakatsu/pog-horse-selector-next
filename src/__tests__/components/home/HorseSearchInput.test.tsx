@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { usePogStore } from '@/store/pogStore'
@@ -12,6 +12,7 @@ vi.mock('@/data/horse_catalogue.json', () => ({
     { horse_id: '2025000004', name: 'テスト馬4', sire: 'テスト父4', mare: 'キズナメア4' },
     { horse_id: '2025000005', name: 'テスト馬5', sire: 'テスト父5', mare: 'キズナメア5' },
     { horse_id: '2025000006', name: 'テスト馬6', sire: 'テスト父6', mare: 'ディープメア' },
+    { horse_id: '2026000001', name: '別年度馬', sire: 'テスト父', mare: 'キズナメア別年' },
   ],
 }))
 
@@ -30,7 +31,12 @@ function makeOwner(overrides: Partial<Owner> = {}): Owner {
 }
 
 beforeEach(() => {
+  vi.stubEnv('NEXT_PUBLIC_TARGET_YEAR', '2025')
   usePogStore.setState({ owners: [], horses: [], loading: false, error: null })
+})
+
+afterEach(() => {
+  vi.unstubAllEnvs()
 })
 
 describe('HorseSearchInput', () => {
@@ -94,6 +100,18 @@ describe('HorseSearchInput', () => {
     // Check icon should appear for キズナメア (selected)
     const checkIcon = document.querySelector('svg[aria-label="選択済み"]')
     expect(checkIcon).toBeInTheDocument()
+  })
+
+  it('異年度（2026年）の馬はサジェストに表示されない', async () => {
+    usePogStore.setState({ owners: [makeOwner()] })
+    const user = userEvent.setup()
+
+    render(<HorseSearchInput onSelect={vi.fn()} selectedMares={[]} />)
+
+    const input = screen.getByPlaceholderText('母馬名で検索...')
+    await user.type(input, 'キズナ')
+
+    expect(screen.queryByText('キズナメア別年')).not.toBeInTheDocument()
   })
 
   it('サジェスト項目を選択するとonSelectが呼ばれる', async () => {
