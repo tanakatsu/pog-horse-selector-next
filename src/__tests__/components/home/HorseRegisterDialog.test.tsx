@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { usePogStore } from '@/store/pogStore'
+import { getCatalogueYear } from '@/lib/utils'
 import type { Owner } from '@/types'
 
 vi.mock('@/hooks/useHorses', () => ({
@@ -84,8 +85,8 @@ describe('HorseRegisterDialog', () => {
       />,
     )
 
-    const horseIdInput = screen.getByPlaceholderText('2025105001')
-    const nameInput = screen.getByPlaceholderText('キズナの2025')
+    const horseIdInput = screen.getByPlaceholderText(`${getCatalogueYear()}105001`)
+    const nameInput = screen.getByPlaceholderText(`キズナの${getCatalogueYear()}`)
     const sireInput = screen.getByPlaceholderText('キズナ')
     const mareInput = screen.getByPlaceholderText('テストメア')
 

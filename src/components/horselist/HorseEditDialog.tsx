@@ -25,6 +25,7 @@ import {
   FormControl,
   FormMessage,
 } from '@/components/ui/form'
+import { getCatalogueYear } from '@/lib/utils'
 
 type Props = {
   open: boolean
@@ -113,7 +114,7 @@ export default function HorseEditDialog({ open, onOpenChange, target }: Props) {
                 <FormItem>
                   <FormLabel>NetkeibaID（任意）</FormLabel>
                   <FormControl>
-                    <Input placeholder="2025105001" {...field} />
+                    <Input placeholder={`${getCatalogueYear()}105001`} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -127,7 +128,7 @@ export default function HorseEditDialog({ open, onOpenChange, target }: Props) {
                 <FormItem>
                   <FormLabel>馬名</FormLabel>
                   <FormControl>
-                    <Input placeholder="キズナの2025" {...field} />
+                    <Input placeholder={`キズナの${getCatalogueYear()}`} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -27,6 +27,7 @@ import {
 } from '@/components/ui/form'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Label } from '@/components/ui/label'
+import { getCatalogueYear } from '@/lib/utils'
 
 type Props = {
   open: boolean
@@ -127,7 +128,7 @@ export default function HorseRegisterDialog({ open, onOpenChange, catalogHorse, 
                 <FormItem>
                   <FormLabel>馬ID（任意）</FormLabel>
                   <FormControl>
-                    <Input placeholder="2025105001" {...field} />
+                    <Input placeholder={`${getCatalogueYear()}105001`} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -140,7 +141,7 @@ export default function HorseRegisterDialog({ open, onOpenChange, catalogHorse, 
                 <FormItem>
                   <FormLabel>馬名</FormLabel>
                   <FormControl>
-                    <Input placeholder="キズナの2025" {...field} />
+                    <Input placeholder={`キズナの${getCatalogueYear()}`} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
