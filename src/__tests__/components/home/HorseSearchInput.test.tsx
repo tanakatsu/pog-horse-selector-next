@@ -31,7 +31,7 @@ function makeOwner(overrides: Partial<Owner> = {}): Owner {
 }
 
 beforeEach(() => {
-  vi.stubEnv('NEXT_PUBLIC_TARGET_YEAR', '2025')
+  vi.stubEnv('NEXT_PUBLIC_TARGET_YEAR', '2027')
   usePogStore.setState({ owners: [], horses: [], loading: false, error: null })
 })
 
@@ -102,7 +102,7 @@ describe('HorseSearchInput', () => {
     expect(checkIcon).toBeInTheDocument()
   })
 
-  it('異年度（2026年）の馬はサジェストに表示されない', async () => {
+  it('カタログ年度外（horse_idが2025で始まらない）の馬はサジェストに表示されない', async () => {
     usePogStore.setState({ owners: [makeOwner()] })
     const user = userEvent.setup()
 
@@ -119,8 +119,8 @@ describe('HorseSearchInput', () => {
 
     render(<HorseSearchInput onSelect={vi.fn()} selectedMares={[]} />)
 
-    // 2025年度の馬は6頭（モックデータ）
-    expect(screen.getByText('2025年度カタログ: 6頭')).toBeInTheDocument()
+    // 2027年度POG対象（horse_idが2025で始まる）馬は6頭（モックデータ）
+    expect(screen.getByText('2027年度カタログ: 6頭')).toBeInTheDocument()
   })
 
   it('サジェスト項目を選択するとonSelectが呼ばれる', async () => {

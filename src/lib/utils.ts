@@ -15,3 +15,8 @@ export function getTargetYear(): number {
   }
   return new Date().getFullYear()
 }
+
+// POG対象は2歳馬。TARGET_YEAR=2026なら2024年産まれの馬が対象
+export function getCatalogueYear(): number {
+  return getTargetYear() - 2
+}

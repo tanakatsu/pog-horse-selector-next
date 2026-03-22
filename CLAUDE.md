@@ -40,6 +40,7 @@ npm run type-check && npm run lint && npm run test
 
 - CSVエクスポートは`'\uFEFF'`（BOM）を先頭に付ける（Excel文字化け防止）
 - 馬カタログは`import catalogue from '@/data/horse_catalogue.json'`で静的import。`noUncheckedIndexedAccess`のため配列アクセスは`undefined`チェックか`!`が必要
+- 馬カタログのフィルタリングは`getCatalogueYear()`（= `getTargetYear() - 2`）で行う。POGは2歳馬対象のためhorse_idの先頭4文字が「TARGET_YEAR - 2」に一致する馬を対象とする（例：2026年度POG → 2024年産まれの馬）
 
 ## ブランチ命名
 

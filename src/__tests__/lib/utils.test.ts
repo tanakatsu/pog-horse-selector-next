@@ -1,4 +1,4 @@
-import { cn, getTargetYear } from '@/lib/utils'
+import { cn, getTargetYear, getCatalogueYear } from '@/lib/utils'
 
 describe('cn()', () => {
   it('単一クラスをそのまま返す', () => {
@@ -41,5 +41,21 @@ describe('getTargetYear()', () => {
   it('環境変数 NEXT_PUBLIC_TARGET_YEAR が非数値文字列の場合は現在年度を返す', () => {
     vi.stubEnv('NEXT_PUBLIC_TARGET_YEAR', 'abc')
     expect(getTargetYear()).toBe(new Date().getFullYear())
+  })
+})
+
+describe('getCatalogueYear()', () => {
+  afterEach(() => {
+    vi.unstubAllEnvs()
+  })
+
+  it('NEXT_PUBLIC_TARGET_YEAR が設定されている場合は TARGET_YEAR - 2 を返す', () => {
+    vi.stubEnv('NEXT_PUBLIC_TARGET_YEAR', '2026')
+    expect(getCatalogueYear()).toBe(2024)
+  })
+
+  it('NEXT_PUBLIC_TARGET_YEAR が未設定の場合は現在年度 - 2 を返す', () => {
+    vi.stubEnv('NEXT_PUBLIC_TARGET_YEAR', undefined as unknown as string)
+    expect(getCatalogueYear()).toBe(new Date().getFullYear() - 2)
   })
 })
