@@ -26,9 +26,14 @@ export function useHorses() {
   const createHorse = useCallback(
     async (data: HorseInput): Promise<void> => {
       const supabase = getSupabaseClient()
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      if (!user) throw new Error('Not authenticated')
       const { error } = await supabase.from('horses').insert({
         ...data,
         year: getTargetYear(),
+        user_id: user.id,
       })
       if (error) throw error
       await fetchHorses()

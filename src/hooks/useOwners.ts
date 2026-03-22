@@ -24,9 +24,14 @@ export function useOwners() {
   const createOwner = useCallback(
     async (data: { name: string; no: number | null }): Promise<void> => {
       const supabase = getSupabaseClient()
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      if (!user) throw new Error('Not authenticated')
       const { error } = await supabase.from('owners').insert({
         ...data,
         year: getTargetYear(),
+        user_id: user.id,
       })
       if (error) throw error
       await fetchOwners()
@@ -37,6 +42,10 @@ export function useOwners() {
   const updateOwner = useCallback(
     async (id: number, data: { name: string; no: number | null }): Promise<void> => {
       const supabase = getSupabaseClient()
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      if (!user) throw new Error('Not authenticated')
       const { error } = await supabase
         .from('owners')
         .update(data)
@@ -51,6 +60,10 @@ export function useOwners() {
   const deleteOwner = useCallback(
     async (id: number): Promise<void> => {
       const supabase = getSupabaseClient()
+      const {
+        data: { user },
+      } = await supabase.auth.getUser()
+      if (!user) throw new Error('Not authenticated')
       const { error } = await supabase
         .from('owners')
         .delete()
