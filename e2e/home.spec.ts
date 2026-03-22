@@ -41,9 +41,9 @@ async function registerHorseManually(
   await expect(page.getByRole('dialog')).not.toBeVisible()
 }
 
-// horse_catalogue.json の先頭にある馬: 母馬名「キズナメア」、馬名「キズナの2025」
-const CATALOGUE_MARE = 'キズナメア'
-const CATALOGUE_HORSE_NAME = 'キズナの2025'
+// horse_catalogue.json の先頭にある馬: 母馬名「アーモンドアイ」、馬名「アーモンドアイの2024」
+const CATALOGUE_MARE = 'アーモンドアイ'
+const CATALOGUE_HORSE_NAME = 'アーモンドアイの2024'
 
 test.describe('馬選択（/home）', () => {
   test.describe.configure({ mode: 'serial' })
@@ -81,11 +81,11 @@ test.describe('馬選択（/home）', () => {
     // カタログに存在する母馬名の先頭部分で検索
     const searchInput = page.getByPlaceholder('母馬名で検索...')
     await expect(searchInput).toBeEnabled()
-    await searchInput.fill('キズナ')
+    await searchInput.fill('アーモンドアイ')
 
     // サジェストリストが表示されることを確認
     await expect(page.getByRole('option', { name: new RegExp(CATALOGUE_MARE) })).toBeVisible()
-    // カタログの馬名（キズナの2025）もサジェスト内に表示されることを確認
+    // カタログの馬名（アーモンドアイの2024）もサジェスト内に表示されることを確認
     await expect(page.getByText(CATALOGUE_HORSE_NAME)).toBeVisible()
   })
 
@@ -108,7 +108,7 @@ test.describe('馬選択（/home）', () => {
 
     // カタログから馬を検索・選択
     const searchInput = page.getByPlaceholder('母馬名で検索...')
-    await searchInput.fill('キズナ')
+    await searchInput.fill('アーモンドアイ')
     await page.getByRole('option', { name: new RegExp(CATALOGUE_MARE) }).click()
 
     // 馬を登録ダイアログが開くことを確認
@@ -336,7 +336,7 @@ test.describe('馬選択（/home）', () => {
     // catalog の馬を検索して ✔ マークが表示されるシナリオを確認する。
     // まずキャンセルして、カタログの馬を登録する
     await searchInput.fill('')
-    await searchInput.fill('キズナ')
+    await searchInput.fill('アーモンドアイ')
     // カタログから選択して登録
     const catalogSuggestion = page.getByRole('option', { name: new RegExp(CATALOGUE_MARE) })
     await expect(catalogSuggestion).toBeVisible()
@@ -353,7 +353,7 @@ test.describe('馬選択（/home）', () => {
     }
 
     // 再度同じ母馬名で検索 → ✔マーク（選択済みアイコン）が表示されることを確認
-    await searchInput.fill('キズナ')
+    await searchInput.fill('アーモンドアイ')
     const checkedSuggestion = page.getByRole('option', { name: new RegExp(CATALOGUE_MARE) })
     await expect(checkedSuggestion).toBeVisible()
     // data-checked 属性か aria-label "選択済み" の Check アイコンを確認
