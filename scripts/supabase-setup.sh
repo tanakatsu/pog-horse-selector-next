@@ -40,12 +40,17 @@ npx supabase link --project-ref "$PROJECT_REF"
 if ls supabase/migrations/*.sql 1>/dev/null 2>&1; then
   echo "==> マイグレーションファイルが既に存在します。スキーマ取得をスキップします。"
   echo ""
-  echo "==> セットアップ完了！"
-  echo ""
-  echo "テストプロジェクトへのテーブル作成:"
-  echo "  1. マイグレーション履歴の不一致エラーが出た場合:"
-  echo "     npx supabase migration repair --status applied <version>"
-  echo "  2. Supabase SQL Editor で supabase/migrations/ 内の最新の *.sql を実行"
+  echo "==> マイグレーションをリモートDBに適用します..."
+  if npx supabase db push; then
+    echo ""
+    echo "==> セットアップ完了！"
+  else
+    echo ""
+    echo "==> db push が失敗しました。手動で適用してください:"
+    echo "  1. マイグレーション履歴の不一致エラーが出た場合:"
+    echo "     npx supabase migration repair --status applied <version>"
+    echo "  2. Supabase SQL Editor で supabase/migrations/ 内の最新の *.sql を実行"
+  fi
 else
   echo "==> リモートのスキーマを取得します..."
   npx supabase db pull
@@ -54,5 +59,9 @@ else
   echo ""
   echo "以降のコマンド:"
   echo "  新規マイグレーション作成: npx supabase migration new <name>"
+  echo "    └ supabase/migrations/<タイムスタンプ>_<name>.sql を生成します"
+  echo "    └ 生成された .sql ファイルに ALTER TABLE / CREATE TABLE 等のDDLを記述してください"
+  echo "    └ 記述後: npx supabase db push でリモートDBに適用"
+  echo "      （失敗した場合は Supabase SQL Editor で手動実行）"
   echo "  マイグレーション一覧:     npx supabase migration list"
 fi
