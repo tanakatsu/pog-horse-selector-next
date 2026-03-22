@@ -16,9 +16,7 @@ export default function HomePage() {
   const [registerOpen, setRegisterOpen] = useState(false)
   const [conflictOpen, setConflictOpen] = useState(false)
   const [selectedCatalogHorse, setSelectedCatalogHorse] = useState<CatalogHorse | null>(null)
-  const [pendingCatalogHorse, setPendingCatalogHorse] = useState<CatalogHorse | null>(null)
-  // Mare name explicitly confirmed through ConflictAlertDialog — skips mare duplicate check in dialog
-  const [confirmedMare, setConfirmedMare] = useState<string | undefined>(undefined)
+  const [conflictMareName, setConflictMareName] = useState('')
 
   // Memoize to avoid passing a new array reference on every render (H-1)
   const selectedMares = useMemo(() => horses.map((h) => h.mare), [horses])
@@ -26,26 +24,16 @@ export default function HomePage() {
   function handleSelectFromSearch(horse: CatalogHorse | null) {
     if (horse === null) {
       setSelectedCatalogHorse(null)
-      setConfirmedMare(undefined)
       setRegisterOpen(true)
       return
     }
     if (selectedMares.includes(horse.mare)) {
-      setPendingCatalogHorse(horse)
+      setConflictMareName(horse.mare)
       setConflictOpen(true)
     } else {
       setSelectedCatalogHorse(horse)
-      setConfirmedMare(undefined)
       setRegisterOpen(true)
     }
-  }
-
-  function handleConflictConfirm() {
-    setConflictOpen(false)
-    setSelectedCatalogHorse(pendingCatalogHorse)
-    setConfirmedMare(pendingCatalogHorse?.mare)
-    setPendingCatalogHorse(null)
-    setRegisterOpen(true)
   }
 
   return (
@@ -60,13 +48,11 @@ export default function HomePage() {
         onOpenChange={setRegisterOpen}
         catalogHorse={selectedCatalogHorse}
         owners={owners}
-        confirmedMare={confirmedMare}
       />
       <ConflictAlertDialog
         open={conflictOpen}
         onOpenChange={setConflictOpen}
-        mareName={pendingCatalogHorse?.mare ?? ''}
-        onConfirm={handleConflictConfirm}
+        mareName={conflictMareName}
       />
     </div>
   )

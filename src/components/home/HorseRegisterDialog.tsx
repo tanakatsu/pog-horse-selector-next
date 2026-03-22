@@ -33,17 +33,9 @@ type Props = {
   onOpenChange: (open: boolean) => void
   catalogHorse: CatalogHorse | null
   owners: Owner[]
-  /** Mare name the user explicitly confirmed despite being a duplicate (skips mare duplicate check) */
-  confirmedMare?: string
 }
 
-export default function HorseRegisterDialog({
-  open,
-  onOpenChange,
-  catalogHorse,
-  owners,
-  confirmedMare,
-}: Props) {
+export default function HorseRegisterDialog({ open, onOpenChange, catalogHorse, owners }: Props) {
   const { createHorse } = useHorses()
 
   // Use base schema (format/length only) in the resolver so it never goes stale.
@@ -94,8 +86,8 @@ export default function HorseRegisterDialog({
         return
       }
 
-      // Duplicate mare check — skip if user already confirmed the conflict
-      if (data.mare !== confirmedMare && freshHorses.some((h) => h.mare === data.mare)) {
+      // Duplicate mare check
+      if (freshHorses.some((h) => h.mare === data.mare)) {
         form.setError('mare', { message: 'この母馬はすでに他の馬として指名されています' })
         return
       }

@@ -1,41 +1,35 @@
 'use client'
 
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogAction,
+} from '@/components/ui/alert-dialog'
 
 type Props = {
   open: boolean
   onOpenChange: (open: boolean) => void
   mareName: string
-  onConfirm: () => void
 }
 
-export default function ConflictAlertDialog({ open, onOpenChange, mareName, onConfirm }: Props) {
+export default function ConflictAlertDialog({ open, onOpenChange, mareName }: Props) {
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>母馬の重複確認</DialogTitle>
-          <DialogDescription>
-            母馬「{mareName}」はすでに他の馬の母として指名されています。このまま登録しますか？
-          </DialogDescription>
-        </DialogHeader>
-        <DialogFooter>
-          <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
-            キャンセル
-          </Button>
-          <Button type="button" variant="destructive" onClick={onConfirm}>
-            続ける
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+    <AlertDialog open={open} onOpenChange={onOpenChange}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>母馬の重複エラー</AlertDialogTitle>
+          <AlertDialogDescription>
+            母馬「{mareName}」はすでに他の馬の母として指名されているので登録できません。
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogAction onClick={() => onOpenChange(false)}>OK</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   )
 }
