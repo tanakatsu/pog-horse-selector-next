@@ -1,11 +1,10 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { Check } from 'lucide-react'
 import { usePogStore } from '@/store/pogStore'
 import type { CatalogHorse } from '@/types'
 import rawCatalogue from '@/data/horse_catalogue.json'
-import { getTargetYear, getCatalogueYear } from '@/lib/utils'
+import { cn, getTargetYear, getCatalogueYear } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
   Command,
@@ -99,22 +98,28 @@ export default function HorseSearchInput({ onSelect, selectedMares, maxSuggestio
               </CommandEmpty>
             ) : (
               <CommandGroup>
-                {suggestions.map((horse) => (
-                  <CommandItem
-                    key={horse.id}
-                    value={horse.id}
-                    onSelect={() => handleSelect(horse)}
-                    data-checked={selectedMares.includes(horse.mare) ? 'true' : undefined}
-                  >
-                    {selectedMares.includes(horse.mare) && (
-                      <Check className="mr-1 size-4 shrink-0" aria-label="選択済み" />
-                    )}
-                    <span className="flex-1">
-                      {horse.mare}
-                      <span className="ml-2 text-muted-foreground text-xs">{horse.name}</span>
-                    </span>
-                  </CommandItem>
-                ))}
+                {suggestions.map((horse) => {
+                  const isSelected = selectedMares.includes(horse.mare)
+                  return (
+                    <CommandItem
+                      key={horse.id}
+                      value={horse.id}
+                      onSelect={() => handleSelect(horse)}
+                      aria-label={isSelected ? `${horse.mare} 指名済み` : horse.mare}
+                      className={cn(isSelected && 'bg-muted/60 text-muted-foreground')}
+                    >
+                      <span className="flex-1">
+                        {horse.mare}
+                        <span className="ml-2 text-muted-foreground text-xs">{horse.name}</span>
+                      </span>
+                      {isSelected && (
+                        <span className="text-xs text-amber-600 bg-amber-50 rounded-full px-2 py-0.5 dark:bg-amber-900/30 dark:text-amber-400">
+                          指名済み
+                        </span>
+                      )}
+                    </CommandItem>
+                  )
+                })}
               </CommandGroup>
             )}
           </CommandList>

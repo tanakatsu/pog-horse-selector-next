@@ -88,7 +88,7 @@ describe('HorseSearchInput', () => {
     expect(screen.queryByText('キズナメア5')).not.toBeInTheDocument()
   })
 
-  it('選択済み母馬に対してチェックマークが表示される', async () => {
+  it('選択済み母馬に対して「指名済み」バッジが表示される', async () => {
     usePogStore.setState({ owners: [makeOwner()] })
     const user = userEvent.setup()
 
@@ -97,9 +97,20 @@ describe('HorseSearchInput', () => {
     const input = screen.getByPlaceholderText('母馬名で検索...')
     await user.type(input, 'キズナ')
 
-    // Check icon should appear for キズナメア (selected)
-    const checkIcon = document.querySelector('svg[aria-label="選択済み"]')
-    expect(checkIcon).toBeInTheDocument()
+    // 「指名済み」バッジが表示される
+    expect(screen.getByText('指名済み')).toBeInTheDocument()
+  })
+
+  it('選択済みでない母馬には「指名済み」バッジが表示されない', async () => {
+    usePogStore.setState({ owners: [makeOwner()] })
+    const user = userEvent.setup()
+
+    render(<HorseSearchInput onSelect={vi.fn()} selectedMares={[]} />)
+
+    const input = screen.getByPlaceholderText('母馬名で検索...')
+    await user.type(input, 'キズナ')
+
+    expect(screen.queryByText('指名済み')).not.toBeInTheDocument()
   })
 
   it('カタログ年度外（horse_idが2025で始まらない）の馬はサジェストに表示されない', async () => {
