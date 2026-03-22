@@ -34,6 +34,8 @@ npm run type-check && npm run lint && npm run test
 
 **バリデーション**: `mare`・`name`の重複チェックはZodの`refine`に既存データを渡す。編集時は自身のレコードを除外リストから外すこと。
 
+**Zustandセレクター**: セレクター内で`.filter()`・`.map()`・スプレッド等により新しい配列/オブジェクトを生成する場合は必ず`useShallow`（`zustand/react/shallow`）でラップする。毎レンダーで新参照が返ると`useSyncExternalStore`の無限ループが発生する。ストア直参照（`state.owners`等）はそのまま返すだけなら問題なし。
+
 **その他**:
 
 - CSVエクスポートは`'\uFEFF'`（BOM）を先頭に付ける（Excel文字化け防止）

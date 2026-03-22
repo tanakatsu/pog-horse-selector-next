@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useShallow } from 'zustand/react/shallow'
 import { usePogStore } from '@/store/pogStore'
 import type { Horse } from '@/types'
 import HorseTable from '@/components/horselist/HorseTable'
@@ -12,11 +13,13 @@ type Props = {
 }
 
 export default function HorseListClient({ ownerName }: Props) {
-  const horses = usePogStore((state) => {
-    const owner = state.owners.find((o) => o.name === ownerName)
-    if (!owner) return []
-    return state.horses.filter((h) => h.owner_id === owner.id)
-  })
+  const horses = usePogStore(
+    useShallow((state) => {
+      const owner = state.owners.find((o) => o.name === ownerName)
+      if (!owner) return []
+      return state.horses.filter((h) => h.owner_id === owner.id)
+    }),
+  )
   const totalHorseCount = usePogStore((state) => state.horses.length)
 
   const [editOpen, setEditOpen] = useState(false)
