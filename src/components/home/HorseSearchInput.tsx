@@ -40,6 +40,7 @@ export default function HorseSearchInput({ onSelect, selectedMares, maxSuggestio
 
   const isDisabled = owners.length === 0 || loading
   const targetYear = String(getTargetYear())
+  const catalogueCount = catalogue.filter((h) => h.horse_id.startsWith(targetYear)).length
 
   const suggestions = query
     ? catalogue
@@ -70,6 +71,9 @@ export default function HorseSearchInput({ onSelect, selectedMares, maxSuggestio
 
   return (
     <div className="relative w-full max-w-md">
+      <p className="text-xs text-muted-foreground mb-1">
+        {targetYear}年度カタログ: {catalogueCount}頭
+      </p>
       <Command shouldFilter={false} className="rounded-lg border shadow-none">
         <CommandInput
           placeholder="母馬名で検索..."

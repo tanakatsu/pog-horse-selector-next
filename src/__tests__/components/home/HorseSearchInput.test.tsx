@@ -114,6 +114,15 @@ describe('HorseSearchInput', () => {
     expect(screen.queryByText('キズナメア別年')).not.toBeInTheDocument()
   })
 
+  it('対象年度のカタログ頭数が表示される', () => {
+    usePogStore.setState({ owners: [makeOwner()] })
+
+    render(<HorseSearchInput onSelect={vi.fn()} selectedMares={[]} />)
+
+    // 2025年度の馬は6頭（モックデータ）
+    expect(screen.getByText('2025年度カタログ: 6頭')).toBeInTheDocument()
+  })
+
   it('サジェスト項目を選択するとonSelectが呼ばれる', async () => {
     usePogStore.setState({ owners: [makeOwner()] })
     const user = userEvent.setup()
