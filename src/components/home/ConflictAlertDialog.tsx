@@ -23,7 +23,7 @@ export default function ConflictAlertDialog({ open, onOpenChange, mareName }: Pr
         <AlertDialogHeader>
           <AlertDialogTitle>母馬の重複エラー</AlertDialogTitle>
           <AlertDialogDescription>
-            母馬「{mareName}」はすでに他の馬の母として指名されているので登録できません。
+            母馬「{mareName}」はすでに他のオーナーの馬の母として指名されているので登録できません。
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

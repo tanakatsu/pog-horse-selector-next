@@ -9,7 +9,7 @@ describe('ConflictAlertDialog', () => {
 
     expect(
       screen.getByText(
-        '母馬「アーモンドアイ」はすでに他の馬の母として指名されているので登録できません。',
+        '母馬「アーモンドアイ」はすでに他のオーナーの馬の母として指名されているので登録できません。',
       ),
     ).toBeInTheDocument()
   })
