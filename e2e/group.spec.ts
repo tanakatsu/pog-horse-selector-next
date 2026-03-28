@@ -41,7 +41,7 @@ test.describe('オーナー管理（/group）', () => {
     await page.getByLabel('番号（任意）').fill('1')
     await page.getByRole('button', { name: '保存' }).click()
     await expect(page.getByRole('dialog')).not.toBeVisible()
-    await expect(page.getByRole('cell', { name: ownerName })).toBeVisible()
+    await expect(page.getByRole('cell', { name: ownerName, exact: true })).toBeVisible()
   })
 
   test('TC-GROUP-002: オーナー編集', async ({ page }) => {
@@ -61,7 +61,7 @@ test.describe('オーナー管理（/group）', () => {
     await page.getByLabel('オーナー名').fill(editedName)
     await page.getByRole('button', { name: '保存' }).click()
     await expect(page.getByRole('dialog')).not.toBeVisible()
-    await expect(page.getByRole('cell', { name: editedName })).toBeVisible()
+    await expect(page.getByRole('cell', { name: editedName, exact: true })).toBeVisible()
   })
 
   test('TC-GROUP-003: オーナー削除（確認ダイアログ）', async ({ page }) => {
@@ -113,7 +113,7 @@ test.describe('オーナー管理（/group）', () => {
     await page.getByLabel('馬名').fill(horseName)
     await page.getByLabel('父馬').fill('テスト父')
     await page.getByLabel('母馬').fill(mareName)
-    await page.getByLabel(ownerName).click()
+    await page.getByRole('radio', { name: ownerName }).click()
     await page.getByRole('button', { name: '登録' }).click()
     await expect(page.getByRole('dialog')).not.toBeVisible()
 
