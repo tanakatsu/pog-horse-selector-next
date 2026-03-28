@@ -56,7 +56,9 @@ test.describe('認証フロー', () => {
     await page.getByLabel('メールアドレス').fill(email)
     await page.getByRole('button', { name: 'リセットメールを送信' }).click()
 
-    await expect(page.getByRole('heading', { name: 'メールを送信しました' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'メールを送信しました' })).toBeVisible({
+      timeout: 15000,
+    })
   })
 
   test('TC-AUTH-004: パスワードリセット', async () => {

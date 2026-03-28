@@ -44,7 +44,7 @@ test.describe('セキュリティ・RLS', () => {
     await page.getByLabel('オーナー名').fill(ownerName)
     await page.getByRole('button', { name: '保存' }).click()
     await expect(page.getByRole('dialog')).not.toBeVisible()
-    await expect(page.getByRole('cell', { name: ownerName })).toBeVisible()
+    await expect(page.getByRole('cell', { name: ownerName, exact: true })).toBeVisible()
 
     // ログアウト
     await logout(page)
@@ -55,7 +55,7 @@ test.describe('セキュリティ・RLS', () => {
     await expect(page.getByRole('heading', { name: 'オーナー管理' })).toBeVisible()
 
     // ユーザーAのオーナーがユーザーBには表示されないことを確認
-    await expect(page.getByRole('cell', { name: ownerName })).not.toBeVisible()
+    await expect(page.getByRole('cell', { name: ownerName, exact: true })).not.toBeVisible()
   })
 
   test('TC-SEC-002: 直接APIアクセスの拒否', async ({ page }) => {
