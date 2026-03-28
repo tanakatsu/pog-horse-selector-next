@@ -127,4 +127,14 @@
   html {
     @apply font-sans;
   }
+  button,
+  [role='button'],
+  a,
+  select,
+  summary,
+  input[type='button'],
+  input[type='submit'],
+  input[type='reset'] {
+    @apply cursor-pointer;
+  }
 }
