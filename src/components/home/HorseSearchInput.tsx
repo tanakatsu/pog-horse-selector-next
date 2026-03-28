@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useMemo } from 'react'
 import { usePogStore } from '@/store/pogStore'
 import type { CatalogHorse } from '@/types'
 import rawCatalogue from '@/data/horse_catalogue.json'
@@ -40,16 +40,21 @@ export default function HorseSearchInput({ onSelect, selectedMares, maxSuggestio
   const isDisabled = owners.length === 0 || loading
   const targetYear = String(getTargetYear())
   const catalogueYear = String(getCatalogueYear())
-  const catalogueCount = catalogue.filter((h) => h.id.startsWith(catalogueYear)).length
 
-  const suggestions = query
-    ? catalogue
-        .filter(
-          (h) =>
-            h.id.startsWith(catalogueYear) && h.mare.toLowerCase().startsWith(query.toLowerCase()),
-        )
-        .slice(0, maxSuggestions)
-    : []
+  const catalogueByYear = useMemo(
+    () => catalogue.filter((h) => h.id.startsWith(catalogueYear)),
+    [catalogueYear],
+  )
+
+  const suggestions = useMemo(
+    () =>
+      query
+        ? catalogueByYear
+            .filter((h) => h.mare.toLowerCase().startsWith(query.toLowerCase()))
+            .slice(0, maxSuggestions)
+        : [],
+    [query, catalogueByYear, maxSuggestions],
+  )
 
   const handleSelect = (horse: CatalogHorse) => {
     onSelect(horse)
@@ -71,7 +76,7 @@ export default function HorseSearchInput({ onSelect, selectedMares, maxSuggestio
   return (
     <div className="relative w-full max-w-md">
       <p className="text-xs text-muted-foreground mb-1">
-        {targetYear}年度カタログ: {catalogueCount}頭
+        {targetYear}年度カタログ: {catalogueByYear.length}頭
       </p>
       <Command shouldFilter={false} className="rounded-lg border shadow-none">
         <CommandInput
