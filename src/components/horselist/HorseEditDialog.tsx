@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useHorses } from '@/hooks/useHorses'
@@ -35,15 +35,30 @@ type Props = {
 
 export default function HorseEditDialog({ open, onOpenChange, target }: Props) {
   const { updateHorse } = useHorses()
-  const horses = usePogStore((state) => state.horses)
   const owners = usePogStore((state) => state.owners)
 
-  const existingNames = useMemo(() => horses.map((h) => h.name), [horses])
-  const existingMares = useMemo(() => horses.map((h) => h.mare), [horses])
+  const [prevOpen, setPrevOpen] = useState(false)
+  const [snapshotNames, setSnapshotNames] = useState<string[]>([])
+  const [snapshotMares, setSnapshotMares] = useState<string[]>([])
+
+  // open が false→true に変わった瞬間のみスナップショットを確定する。
+  // ・useEffect ではなくレンダー中に setState することで余分な commit を防ぐ
+  //   （React 公式の "adjusting state when a prop changes" パターン）。
+  // ・getState() で一度だけ読み取り、購読しないことで Realtime 更新の影響を受けない。
+  // ・RHF v7 は _options.current.resolver を毎レンダーで更新するため、
+  //   schema が変わると次の submit 時には必ず最新のスキーマで検証される。
+  if (prevOpen !== open) {
+    setPrevOpen(open)
+    if (open) {
+      const horses = usePogStore.getState().horses
+      setSnapshotNames(horses.map((h) => h.name))
+      setSnapshotMares(horses.map((h) => h.mare))
+    }
+  }
 
   const schema = useMemo(
-    () => createHorseSchema(existingNames, existingMares, target?.name, target?.mare),
-    [existingNames, existingMares, target?.name, target?.mare],
+    () => createHorseSchema(snapshotNames, snapshotMares, target?.name, target?.mare),
+    [snapshotNames, snapshotMares, target?.name, target?.mare],
   )
 
   const ownerName = useMemo(() => {
