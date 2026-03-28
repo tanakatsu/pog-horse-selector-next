@@ -69,7 +69,7 @@ test.describe('CSVエクスポート（/download）', () => {
     await page.getByLabel('馬名').fill(horseName)
     await page.getByLabel('父馬').fill('テスト父')
     await page.getByLabel('母馬').fill(mareName)
-    await page.getByLabel(ownerName).click()
+    await page.getByRole('radio', { name: ownerName }).click()
     await page.getByRole('button', { name: '登録' }).click()
     await expect(page.getByRole('dialog')).not.toBeVisible()
 
