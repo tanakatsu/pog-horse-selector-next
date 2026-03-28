@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { forgotPasswordSchema, type ForgotPasswordInput } from '@/lib/validations/auth'
 import { getSupabaseClient } from '@/lib/supabase/client'
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card'
+import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -44,7 +44,7 @@ export default function ForgotPasswordPage() {
     return (
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-xl">メールを送信しました</CardTitle>
+          <h2 className="text-xl font-medium">メールを送信しました</h2>
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground">
@@ -63,7 +63,7 @@ export default function ForgotPasswordPage() {
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
-        <CardTitle className="text-xl">パスワードをお忘れですか？</CardTitle>
+        <h2 className="text-xl font-medium">パスワードをお忘れですか？</h2>
       </CardHeader>
       <CardContent>
         <Form {...form}>

@@ -8,7 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { signupSchema, type SignupInput, getAuthErrorMessage } from '@/lib/validations/auth'
 import { APP_TITLE } from '@/lib/constants'
 import { getSupabaseClient } from '@/lib/supabase/client'
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card'
+import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -56,7 +56,7 @@ export default function SignupPage() {
           <p className="text-sm font-semibold tracking-widest text-muted-foreground uppercase">
             {APP_TITLE}
           </p>
-          <CardTitle className="text-xl">確認メールを送信しました</CardTitle>
+          <h2 className="text-xl font-medium">確認メールを送信しました</h2>
         </CardHeader>
         <CardContent>
           <p className="text-sm text-muted-foreground">
@@ -79,7 +79,7 @@ export default function SignupPage() {
         <p className="text-sm font-semibold tracking-widest text-muted-foreground uppercase">
           {APP_TITLE}
         </p>
-        <CardTitle className="text-xl">アカウント作成</CardTitle>
+        <h2 className="text-xl font-medium">アカウント作成</h2>
       </CardHeader>
       <CardContent>
         <Form {...form}>

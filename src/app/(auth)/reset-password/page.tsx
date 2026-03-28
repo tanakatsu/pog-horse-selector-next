@@ -10,7 +10,7 @@ import {
   getAuthErrorMessage,
 } from '@/lib/validations/auth'
 import { getSupabaseClient } from '@/lib/supabase/client'
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
+import { Card, CardHeader, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -46,7 +46,7 @@ export default function ResetPasswordPage() {
   return (
     <Card className="w-full max-w-md">
       <CardHeader>
-        <CardTitle className="text-xl">パスワードをリセット</CardTitle>
+        <h2 className="text-xl font-medium">パスワードをリセット</h2>
       </CardHeader>
       <CardContent>
         <Form {...form}>
