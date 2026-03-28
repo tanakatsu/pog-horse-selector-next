@@ -361,4 +361,101 @@ test.describe('馬選択（/home）', () => {
     // 「指名済み」バッジが表示されることを確認
     await expect(checkedSuggestion.getByText('指名済み')).toBeVisible()
   })
+
+  test('TC-HOME-009: 選択済みの馬は選択できないこと', async ({ page }) => {
+    test.skip(
+      !process.env['TEST_USER_EMAIL'] ||
+        !process.env['TEST_USER_PASSWORD'] ||
+        !process.env['SUPABASE_SERVICE_ROLE_KEY'],
+      'TEST_USER_EMAIL / TEST_USER_PASSWORD / SUPABASE_SERVICE_ROLE_KEY が未設定のためスキップ',
+    )
+    await loginAsTestUser(page)
+
+    const ownerName = `選択済み検証_${Date.now()}`
+    await addOwnerOnGroupPage(page, ownerName)
+
+    await page.goto('/home')
+    await expect(page.getByRole('heading', { name: '馬選択' })).toBeVisible()
+
+    // カタログの馬をオーナーに登録
+    const searchInput = page.getByPlaceholder('母馬名で検索…')
+    await searchInput.fill('アーモンドアイ')
+    await page.getByRole('option', { name: new RegExp(CATALOGUE_MARE) }).click()
+    await expect(page.getByRole('dialog', { name: '馬を登録' })).toBeVisible()
+    await page.getByRole('radio', { name: ownerName }).click()
+    await page.getByRole('button', { name: '登録' }).click()
+    await expect(page.getByRole('dialog')).not.toBeVisible()
+
+    // 同じ馬を再度検索して選択 → 「馬を登録」ダイアログではなく母馬重複エラーが表示されること
+    await searchInput.fill('アーモンドアイ')
+    const option = page.getByRole('option', { name: new RegExp(CATALOGUE_MARE) })
+    await expect(option).toBeVisible()
+    // 「指名済み」バッジが表示されていること
+    await expect(option.getByText('指名済み')).toBeVisible()
+    // 選択すると登録ダイアログではなく競合エラーダイアログが開くこと
+    await option.click()
+    await expect(page.getByRole('dialog', { name: '馬を登録' })).not.toBeVisible()
+    const conflictDialog = page.getByRole('alertdialog')
+    await expect(conflictDialog).toBeVisible()
+    await expect(conflictDialog.getByText('母馬の重複エラー')).toBeVisible()
+  })
+
+  test('TC-HOME-010: 選択済みの馬が削除されると別オーナーの馬として再び登録できること', async ({
+    page,
+  }) => {
+    test.skip(
+      !process.env['TEST_USER_EMAIL'] ||
+        !process.env['TEST_USER_PASSWORD'] ||
+        !process.env['SUPABASE_SERVICE_ROLE_KEY'],
+      'TEST_USER_EMAIL / TEST_USER_PASSWORD / SUPABASE_SERVICE_ROLE_KEY が未設定のためスキップ',
+    )
+    await loginAsTestUser(page)
+
+    const suffix = Date.now()
+    const ownerName1 = `削除再登録オーナー1_${suffix}`
+    const ownerName2 = `削除再登録オーナー2_${suffix}`
+
+    // 2つのオーナーを作成
+    await addOwnerOnGroupPage(page, ownerName1)
+    await addOwnerOnGroupPage(page, ownerName2)
+
+    // カタログの馬をオーナー1に登録
+    await page.goto('/home')
+    await expect(page.getByRole('heading', { name: '馬選択' })).toBeVisible()
+    const searchInput = page.getByPlaceholder('母馬名で検索…')
+    await searchInput.fill('アーモンドアイ')
+    await page.getByRole('option', { name: new RegExp(CATALOGUE_MARE) }).click()
+    await expect(page.getByRole('dialog', { name: '馬を登録' })).toBeVisible()
+    await page.getByRole('radio', { name: ownerName1 }).click()
+    await page.getByRole('button', { name: '登録' }).click()
+    await expect(page.getByRole('dialog')).not.toBeVisible()
+
+    // オーナー1の馬リストへ移動して登録した馬を削除
+    await page.goto(`/horselist/${encodeURIComponent(ownerName1)}`)
+    // データ行が1行だけであることを確認してから削除（ヘッダー行 + データ1行 = 2行）
+    await expect(page.getByRole('row')).toHaveCount(2)
+    await page.getByRole('button', { name: new RegExp(`${CATALOGUE_HORSE_NAME}を削除`) }).click()
+    await expect(page.getByRole('dialog', { name: '馬を削除' })).toBeVisible()
+    await page.getByRole('button', { name: '削除' }).click()
+    await expect(page.getByRole('dialog')).not.toBeVisible()
+
+    // /home に戻り、同じ馬が「指名済み」でなくなっていることを確認
+    await page.goto('/home')
+    await expect(page.getByRole('heading', { name: '馬選択' })).toBeVisible()
+    await page.getByPlaceholder('母馬名で検索…').fill('アーモンドアイ')
+    const option = page.getByRole('option', { name: new RegExp(CATALOGUE_MARE) })
+    await expect(option).toBeVisible()
+    await expect(option.getByText('指名済み')).not.toBeVisible()
+
+    // オーナー2に登録できること
+    await option.click()
+    await expect(page.getByRole('dialog', { name: '馬を登録' })).toBeVisible()
+    await page.getByRole('radio', { name: ownerName2 }).click()
+    await page.getByRole('button', { name: '登録' }).click()
+    await expect(page.getByRole('dialog')).not.toBeVisible()
+
+    // オーナー2の馬数が増えていることを確認
+    const ownerItem2 = page.getByRole('listitem').filter({ hasText: ownerName2 })
+    await expect(ownerItem2.getByText(/[1-9]\d* 頭/)).toBeVisible()
+  })
 })

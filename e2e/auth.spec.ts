@@ -61,4 +61,21 @@ test.describe('認証フロー', () => {
     await page.goto('/login')
     await expect(page).toHaveURL(/\/home/)
   })
+
+  test('TC-AUTH-007: 正常にログアウトできること', async ({ page }) => {
+    test.skip(
+      !process.env['TEST_USER_EMAIL'] || !process.env['TEST_USER_PASSWORD'],
+      'TEST_USER_EMAIL / TEST_USER_PASSWORD が未設定のためスキップ',
+    )
+    await loginAsTestUser(page)
+    await expect(page).toHaveURL(/\/home/)
+
+    // ログアウトボタンをクリック
+    await page.getByRole('button', { name: 'ログアウト' }).click()
+    await expect(page).toHaveURL(/\/login/)
+
+    // ログアウト後は /home にアクセスしても /login にリダイレクトされること
+    await page.goto('/home')
+    await expect(page).toHaveURL(/\/login/)
+  })
 })
