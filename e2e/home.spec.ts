@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test'
+import { cleanupTestUserData } from './fixtures/cleanup'
 
 async function loginAsTestUser(page: Page) {
   const email = process.env['TEST_USER_EMAIL'] ?? ''
@@ -33,10 +34,10 @@ async function registerHorseManually(
   await searchInput.fill(opts.mare)
   await page.getByRole('button', { name: '手動で登録' }).click()
   await expect(page.getByRole('dialog', { name: '馬を登録' })).toBeVisible()
-  await page.getByLabel('馬名').fill(opts.horseName)
-  await page.getByLabel('父馬').fill(opts.sire)
-  await page.getByLabel('母馬').fill(opts.mare)
-  await page.getByLabel(opts.ownerName).click()
+  await page.getByRole('textbox', { name: '馬名' }).fill(opts.horseName)
+  await page.getByRole('textbox', { name: '父馬' }).fill(opts.sire)
+  await page.getByRole('textbox', { name: '母馬' }).fill(opts.mare)
+  await page.getByRole('radio', { name: opts.ownerName }).click()
   await page.getByRole('button', { name: '登録' }).click()
   await expect(page.getByRole('dialog')).not.toBeVisible()
 }
@@ -48,14 +49,23 @@ const CATALOGUE_HORSE_NAME = 'アーモンドアイの2024'
 test.describe('馬選択（/home）', () => {
   test.describe.configure({ mode: 'serial' })
 
+  test.beforeEach(async () => {
+    if (
+      process.env['TEST_USER_EMAIL'] &&
+      process.env['TEST_USER_PASSWORD'] &&
+      process.env['SUPABASE_SERVICE_ROLE_KEY']
+    ) {
+      await cleanupTestUserData()
+    }
+  })
+
   test('TC-HOME-001: オーナー未登録時の検索無効化', async ({ page }) => {
     test.skip(
-      !process.env['TEST_USER_EMAIL'] || !process.env['TEST_USER_PASSWORD'],
-      'TEST_USER_EMAIL / TEST_USER_PASSWORD が未設定のためスキップ',
+      !process.env['TEST_USER_EMAIL'] ||
+        !process.env['TEST_USER_PASSWORD'] ||
+        !process.env['SUPABASE_SERVICE_ROLE_KEY'],
+      'TEST_USER_EMAIL / TEST_USER_PASSWORD / SUPABASE_SERVICE_ROLE_KEY が未設定のためスキップ',
     )
-    // 注意: このテストはオーナーが0件のテストアカウントでのみ正確に動作します。
-    // オーナーが登録済みの場合、検索欄が有効になりテストが失敗します。
-    // 専用のクリーンなアカウントを TEST_USER_EMAIL に設定して実行してください。
     await loginAsTestUser(page)
     await page.goto('/home')
     await expect(page.getByRole('heading', { name: '馬選択' })).toBeVisible()
@@ -114,11 +124,11 @@ test.describe('馬選択（/home）', () => {
     // 馬を登録ダイアログが開くことを確認
     await expect(page.getByRole('dialog', { name: '馬を登録' })).toBeVisible()
     // フォームにカタログ情報が自動入力されていることを確認
-    await expect(page.getByLabel('馬名')).toHaveValue(CATALOGUE_HORSE_NAME)
-    await expect(page.getByLabel('母馬')).toHaveValue(CATALOGUE_MARE)
+    await expect(page.getByRole('textbox', { name: '馬名' })).toHaveValue(CATALOGUE_HORSE_NAME)
+    await expect(page.getByRole('textbox', { name: '母馬' })).toHaveValue(CATALOGUE_MARE)
 
     // オーナーを選択して登録
-    await page.getByLabel(ownerName).click()
+    await page.getByRole('radio', { name: ownerName }).click()
     await page.getByRole('button', { name: '登録' }).click()
     await expect(page.getByRole('dialog')).not.toBeVisible()
 
@@ -152,10 +162,10 @@ test.describe('馬選択（/home）', () => {
     await page.getByRole('button', { name: '手動で登録' }).click()
 
     await expect(page.getByRole('dialog', { name: '馬を登録' })).toBeVisible()
-    await page.getByLabel('馬名').fill(horseName)
-    await page.getByLabel('父馬').fill('テスト父馬')
-    await page.getByLabel('母馬').fill(mareName)
-    await page.getByLabel(ownerName).click()
+    await page.getByRole('textbox', { name: '馬名' }).fill(horseName)
+    await page.getByRole('textbox', { name: '父馬' }).fill('テスト父馬')
+    await page.getByRole('textbox', { name: '母馬' }).fill(mareName)
+    await page.getByRole('radio', { name: ownerName }).click()
     await page.getByRole('button', { name: '登録' }).click()
     await expect(page.getByRole('dialog')).not.toBeVisible()
 
@@ -195,10 +205,10 @@ test.describe('馬選択（/home）', () => {
     await page.getByRole('button', { name: '手動で登録' }).click()
 
     await expect(page.getByRole('dialog', { name: '馬を登録' })).toBeVisible()
-    await page.getByLabel('馬名').fill(horseName2)
-    await page.getByLabel('父馬').fill('父馬')
-    await page.getByLabel('母馬').fill(mareName)
-    await page.getByLabel(ownerName).click()
+    await page.getByRole('textbox', { name: '馬名' }).fill(horseName2)
+    await page.getByRole('textbox', { name: '父馬' }).fill('父馬')
+    await page.getByRole('textbox', { name: '母馬' }).fill(mareName)
+    await page.getByRole('radio', { name: ownerName }).click()
     await page.getByRole('button', { name: '登録' }).click()
 
     // 母馬重複エラーメッセージを確認
@@ -236,10 +246,10 @@ test.describe('馬選択（/home）', () => {
     await page.getByRole('button', { name: '手動で登録' }).click()
 
     await expect(page.getByRole('dialog', { name: '馬を登録' })).toBeVisible()
-    await page.getByLabel('馬名').fill(horseName)
-    await page.getByLabel('父馬').fill('父馬')
-    await page.getByLabel('母馬').fill(mareName2)
-    await page.getByLabel(ownerName).click()
+    await page.getByRole('textbox', { name: '馬名' }).fill(horseName)
+    await page.getByRole('textbox', { name: '父馬' }).fill('父馬')
+    await page.getByRole('textbox', { name: '母馬' }).fill(mareName2)
+    await page.getByRole('radio', { name: ownerName }).click()
     await page.getByRole('button', { name: '登録' }).click()
 
     // 馬名重複エラーメッセージを確認
@@ -267,10 +277,10 @@ test.describe('馬選択（/home）', () => {
       await searchInput.fill(`採番メア${i}_${suffix}`)
       await page.getByRole('button', { name: '手動で登録' }).click()
       await expect(page.getByRole('dialog', { name: '馬を登録' })).toBeVisible()
-      await page.getByLabel('馬名').fill(`採番馬${i}_${suffix}`)
-      await page.getByLabel('父馬').fill('父馬')
-      await page.getByLabel('母馬').fill(`採番メア${i}_${suffix}`)
-      await page.getByLabel(ownerName).click()
+      await page.getByRole('textbox', { name: '馬名' }).fill(`採番馬${i}_${suffix}`)
+      await page.getByRole('textbox', { name: '父馬' }).fill('父馬')
+      await page.getByRole('textbox', { name: '母馬' }).fill(`採番メア${i}_${suffix}`)
+      await page.getByRole('radio', { name: ownerName }).click()
       await page.getByRole('button', { name: '登録' }).click()
       await expect(page.getByRole('dialog')).not.toBeVisible()
     }
@@ -279,27 +289,19 @@ test.describe('馬選択（/home）', () => {
     await page.goto(`/horselist/${encodeURIComponent(ownerName)}`)
     await expect(page.getByRole('heading', { name: `${ownerName} の馬リスト` })).toBeVisible()
 
-    // No列のセルを取得して順番を確認
+    // データロードを待つ（ヘッダー行 + データ3行 = 計4行）
     const rows = page.getByRole('row')
-    const rowCount = await rows.count()
+    await expect(rows).toHaveCount(4)
+
+    // No列のセルを取得して順番を確認
     const nos: number[] = []
-    for (let i = 1; i < rowCount; i++) {
-      const row = rows.nth(i)
-      const cells = row.getByRole('cell')
-      const noText = await cells.first().textContent()
-      const no = Number(noText?.trim())
-      if (!isNaN(no) && no > 0) {
-        nos.push(no)
-      }
+    for (let i = 1; i <= 3; i++) {
+      const noText = await rows.nth(i).getByRole('cell').first().textContent()
+      nos.push(Number(noText?.trim()))
     }
 
-    // 3頭分の番号が存在し、最後の3つが 1, 2, 3 であることを確認
-    // （既存データがある可能性があるため後ろ3件を確認）
-    const last3 = nos.slice(-3)
-    expect(last3.length).toBe(3)
-    // po_order_no が連続した整数であることを確認
-    expect(last3[1]).toBe((last3[0] ?? 0) + 1)
-    expect(last3[2]).toBe((last3[0] ?? 0) + 2)
+    // po_order_no が 1, 2, 3 であることを確認
+    expect(nos).toEqual([1, 2, 3])
   })
 
   test('TC-HOME-008: 選択済み馬の ✔ マーク表示', async ({ page }) => {
@@ -347,7 +349,7 @@ test.describe('馬選択（/home）', () => {
       // まだ登録されていない場合は登録する
       await catalogSuggestion.click()
       await expect(page.getByRole('dialog', { name: '馬を登録' })).toBeVisible()
-      await page.getByLabel(ownerName).click()
+      await page.getByRole('radio', { name: ownerName }).click()
       await page.getByRole('button', { name: '登録' }).click()
       await expect(page.getByRole('dialog')).not.toBeVisible()
     }
@@ -356,7 +358,7 @@ test.describe('馬選択（/home）', () => {
     await searchInput.fill('アーモンドアイ')
     const checkedSuggestion = page.getByRole('option', { name: new RegExp(CATALOGUE_MARE) })
     await expect(checkedSuggestion).toBeVisible()
-    // data-checked 属性か aria-label "選択済み" の Check アイコンを確認
-    await expect(checkedSuggestion.getByLabel('選択済み')).toBeVisible()
+    // 「指名済み」バッジが表示されることを確認
+    await expect(checkedSuggestion.getByText('指名済み')).toBeVisible()
   })
 })
