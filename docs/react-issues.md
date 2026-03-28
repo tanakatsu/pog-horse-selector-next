@@ -1,6 +1,6 @@
 # React / Next.js パフォーマンス改善 Issues
 
-vercel-react-best-practices による精査結果。#1は対応済み（commit 34ff1d5）、#2は対応済み、#3は対応済み（commit d181aa4）、#4は対応済み、#5は対応済み。
+vercel-react-best-practices による精査結果。#1は対応済み（commit 34ff1d5）、#2は対応済み、#3は対応済み（commit d181aa4）、#4は対応済み、#5は対応済み、#6は対応済み。
 
 ---
 
@@ -100,7 +100,7 @@ const handleSelectFromSearch = useCallback((horse: CatalogHorse | null) => {
 
 ---
 
-## ⬜ #6 DataProvider: 初期データを SSR でプリフェッチ
+## ✅ #6 DataProvider: 初期データを SSR でプリフェッチ（対応済み）
 
 **優先度: MEDIUM（対応コスト: 大）**
 **ファイル:** `src/components/layout/DataProvider.tsx:11-43`

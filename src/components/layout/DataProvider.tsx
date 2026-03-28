@@ -1,46 +1,33 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import type { RealtimePostgresChangesPayload } from '@supabase/supabase-js'
 import { getSupabaseClient } from '@/lib/supabase/client'
 import { getTargetYear } from '@/lib/utils'
 import { usePogStore } from '@/store/pogStore'
 import type { Horse, Owner } from '@/types'
 
-export default function DataProvider({ children }: { children: React.ReactNode }) {
+interface DataProviderProps {
+  children: React.ReactNode
+  initialOwners: Owner[]
+  initialHorses: Horse[]
+}
+
+export default function DataProvider({
+  children,
+  initialOwners,
+  initialHorses,
+}: DataProviderProps) {
+  const initialized = useRef(false)
+  if (!initialized.current) {
+    initialized.current = true
+    usePogStore.getState().setOwners(initialOwners)
+    usePogStore.getState().setHorses(initialHorses)
+  }
+
   useEffect(() => {
     const supabase = getSupabaseClient()
     const year = getTargetYear()
-
-    const init = async () => {
-      usePogStore.getState().setLoading(true)
-      try {
-        const [ownersResult, horsesResult] = await Promise.all([
-          supabase
-            .from('owners')
-            .select('*')
-            .eq('year', year)
-            .order('no', { ascending: true, nullsFirst: false }),
-          supabase
-            .from('horses')
-            .select('*')
-            .eq('year', year)
-            .order('po_order_no', { ascending: true }),
-        ])
-        if (ownersResult.error) throw ownersResult.error
-        if (horsesResult.error) throw horsesResult.error
-        usePogStore.getState().setOwners((ownersResult.data ?? []) as Owner[])
-        usePogStore.getState().setHorses((horsesResult.data ?? []) as Horse[])
-      } catch (err) {
-        usePogStore
-          .getState()
-          .setError(err instanceof Error ? err.message : 'データの取得に失敗しました')
-      } finally {
-        usePogStore.getState().setLoading(false)
-      }
-    }
-
-    void init()
 
     const handleOwnerChange = (
       payload: RealtimePostgresChangesPayload<Record<string, unknown>>,
