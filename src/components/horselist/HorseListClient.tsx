@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useState } from 'react'
+import { useCallback, useState, Suspense } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 import { usePogStore } from '@/store/pogStore'
 import type { Horse } from '@/types'
@@ -49,12 +49,14 @@ export default function HorseListClient({ ownerName }: Props) {
 
   return (
     <>
-      <HorseTable
-        horses={horses}
-        totalHorseCount={totalHorseCount}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-      />
+      <Suspense>
+        <HorseTable
+          horses={horses}
+          totalHorseCount={totalHorseCount}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+        />
+      </Suspense>
       <HorseEditDialog open={editOpen} onOpenChange={handleEditOpenChange} target={editTarget} />
       <HorseDeleteDialog
         open={deleteOpen}

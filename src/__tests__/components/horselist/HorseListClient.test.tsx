@@ -3,6 +3,12 @@ import { render, screen } from '@testing-library/react'
 import { usePogStore } from '@/store/pogStore'
 import type { Horse, Owner } from '@/types'
 
+vi.mock('next/navigation', () => ({
+  useSearchParams: () => new URLSearchParams(),
+  useRouter: () => ({ replace: vi.fn() }),
+  usePathname: () => '/horselist/test-owner',
+}))
+
 vi.mock('@/components/horselist/HorseEditDialog', () => ({
   default: () => null,
 }))

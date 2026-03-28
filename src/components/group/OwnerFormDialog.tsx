@@ -109,6 +109,7 @@ export default function OwnerFormDialog({ open, onOpenChange, editTarget }: Prop
                   <FormControl>
                     <Input
                       type="number"
+                      inputMode="numeric"
                       value={field.value ?? ''}
                       onChange={(e) => {
                         if (e.target.value === '') {

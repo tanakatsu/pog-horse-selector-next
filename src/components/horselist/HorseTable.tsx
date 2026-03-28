@@ -1,6 +1,7 @@
 'use client'
 
-import { memo, useState, useMemo } from 'react'
+import { memo, useState, useMemo, useCallback, useRef } from 'react'
+import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import { Pencil, Trash2 } from 'lucide-react'
 import type { Horse } from '@/types'
 import { Button } from '@/components/ui/button'
@@ -24,8 +25,28 @@ type Props = {
 }
 
 const HorseTable = memo(function HorseTable({ horses, totalHorseCount, onEdit, onDelete }: Props) {
-  const [query, setQuery] = useState('')
-  const [page, setPage] = useState(1)
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const pathname = usePathname()
+
+  const [query, setQuery] = useState(() => searchParams.get('filter') ?? '')
+  const [page, setPage] = useState(() => {
+    const p = Number(searchParams.get('page') ?? '1')
+    return Number.isFinite(p) && p >= 1 ? Math.floor(p) : 1
+  })
+
+  const debounceRef = useRef<ReturnType<typeof setTimeout>>(null)
+
+  const updateUrl = useCallback(
+    (q: string, p: number) => {
+      const params = new URLSearchParams()
+      if (q) params.set('filter', q)
+      if (p > 1) params.set('page', String(p))
+      const qs = params.toString()
+      router.replace(qs ? `${pathname}?${qs}` : pathname)
+    },
+    [pathname, router],
+  )
 
   const sorted = useMemo(() => [...horses].sort((a, b) => a.po_order_no - b.po_order_no), [horses])
 
@@ -46,8 +67,11 @@ const HorseTable = memo(function HorseTable({ horses, totalHorseCount, onEdit, o
   const paged = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
 
   const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(e.target.value)
+    const q = e.target.value
+    setQuery(q)
     setPage(1)
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    debounceRef.current = setTimeout(() => updateUrl(q, 1), 300)
   }
 
   return (
@@ -90,9 +114,15 @@ const HorseTable = memo(function HorseTable({ horses, totalHorseCount, onEdit, o
             paged.map((horse) => (
               <TableRow key={horse.id}>
                 <TableCell>{horse.po_order_no}</TableCell>
-                <TableCell>{horse.name}</TableCell>
-                <TableCell>{horse.sire}</TableCell>
-                <TableCell>{horse.mare}</TableCell>
+                <TableCell className="max-w-[12rem] truncate" title={horse.name}>
+                  {horse.name}
+                </TableCell>
+                <TableCell className="max-w-[12rem] truncate" title={horse.sire}>
+                  {horse.sire}
+                </TableCell>
+                <TableCell className="max-w-[12rem] truncate" title={horse.mare}>
+                  {horse.mare}
+                </TableCell>
                 <TableCell>{horse.horse_id ?? '-'}</TableCell>
                 <TableCell>
                   <div className="flex gap-2">
@@ -126,7 +156,11 @@ const HorseTable = memo(function HorseTable({ horses, totalHorseCount, onEdit, o
             variant="outline"
             size="sm"
             disabled={currentPage === 1}
-            onClick={() => setPage((p) => p - 1)}
+            onClick={() => {
+              const newPage = currentPage - 1
+              setPage(newPage)
+              updateUrl(query, newPage)
+            }}
           >
             前へ
           </Button>
@@ -137,7 +171,11 @@ const HorseTable = memo(function HorseTable({ horses, totalHorseCount, onEdit, o
             variant="outline"
             size="sm"
             disabled={currentPage === totalPages}
-            onClick={() => setPage((p) => p + 1)}
+            onClick={() => {
+              const newPage = currentPage + 1
+              setPage(newPage)
+              updateUrl(query, newPage)
+            }}
           >
             次へ
           </Button>

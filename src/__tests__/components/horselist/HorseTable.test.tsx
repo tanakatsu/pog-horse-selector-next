@@ -2,6 +2,12 @@ import { describe, it, expect, vi } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import type { Horse } from '@/types'
 
+vi.mock('next/navigation', () => ({
+  useSearchParams: () => new URLSearchParams(),
+  useRouter: () => ({ replace: vi.fn() }),
+  usePathname: () => '/horselist/test-owner',
+}))
+
 const { default: HorseTable } = await import('@/components/horselist/HorseTable')
 
 const mockHorses: Horse[] = [
