@@ -1,6 +1,6 @@
 # POG Horse Selector
 
-POG（Pick One Good horse）ドラフト会議で、複数の参加者がリアルタイムに競走馬を指名・管理するWebアプリです。
+POG（Paper Owner Game）ドラフト会議で、複数の参加者がリアルタイムに競走馬を指名・管理するWebアプリです。
 
 ## 機能
 
