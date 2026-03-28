@@ -1,4 +1,5 @@
 import { test, expect, type Page } from '@playwright/test'
+import { cleanupTestUserData } from './fixtures/cleanup'
 
 async function loginAsTestUser(page: Page) {
   const email = process.env['TEST_USER_EMAIL'] ?? ''
@@ -12,6 +13,16 @@ async function loginAsTestUser(page: Page) {
 
 test.describe('CSVエクスポート（/download）', () => {
   test.describe.configure({ mode: 'serial' })
+
+  test.beforeEach(async () => {
+    if (
+      process.env['TEST_USER_EMAIL'] &&
+      process.env['TEST_USER_PASSWORD'] &&
+      process.env['SUPABASE_SERVICE_ROLE_KEY']
+    ) {
+      await cleanupTestUserData()
+    }
+  })
 
   test('TC-DOWNLOAD-001: 未認証アクセスは /login にリダイレクト', async ({ page }) => {
     await page.goto('/download')
