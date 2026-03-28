@@ -165,6 +165,8 @@
 （メール受信・リンク踏み・パスワード変更まではメール環境依存のため手動確認）
 ```
 
+> **注意**: Supabase の無料プランではメール送信に Rate limit（60秒あたり数件）が設定されている。短時間に繰り返しテストを実行すると `Rate limit for sending emails` エラーが発生してテストが失敗することがある。その場合は時間を置いて再実行すること。
+
 #### TC-AUTH-005: 未認証アクセスのリダイレクト
 
 ```
@@ -451,10 +453,17 @@ E2EテストはSupabaseのテスト用クラウドプロジェクトを使用す
 ```
 NEXT_PUBLIC_SUPABASE_URL=https://xxxxxxxx.supabase.co
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_xxxxxxxx
+SUPABASE_SERVICE_ROLE_KEY=eyxxxxxxxx
 NEXT_PUBLIC_TARGET_YEAR=2026
-TEST_USER_EMAIL=test@example.com
+TEST_USER_EMAIL=your-real-email@example.com
 TEST_USER_PASSWORD=testpassword123
+TEST_USER2_EMAIL=your-real-email2@example.com
+TEST_USER2_PASSWORD=testpassword456
 ```
+
+> `TEST_USER_EMAIL` / `TEST_USER2_EMAIL` は**実在するメールアドレス**を指定すること。Supabase の認証メール送信先となるため、架空のアドレスではテストが失敗する場合がある。
+>
+> `SUPABASE_SERVICE_ROLE_KEY` は Supabase ダッシュボードの Project Settings → API → `service_role` キーを使用する（RLSをバイパスした管理操作に使用）。
 
 #### 実行コマンド
 
@@ -476,7 +485,7 @@ npx dotenv -e .env.test -- npx playwright test e2e/auth.spec.ts
 
 - `group.spec.ts` などは `Date.now()` を使ったユニーク名でデータを作成するため、テスト後もDBにデータが残る
 - テスト用プロジェクトのため実害はないが、定期的にSupabaseの SQL Editor で `TRUNCATE` してもよい
-- `TEST_USER_EMAIL` / `TEST_USER_PASSWORD` が未設定の場合、Supabase接続が必要なテストは自動スキップされる
+- `TEST_USER_EMAIL` / `TEST_USER_PASSWORD` / `TEST_USER2_EMAIL` / `TEST_USER2_PASSWORD` が未設定の場合、Supabase接続が必要なテストは自動スキップされる
 
 ---
 
