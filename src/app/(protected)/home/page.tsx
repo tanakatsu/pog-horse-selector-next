@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 import { usePogStore, sortedOwners } from '@/store/pogStore'
 import type { CatalogHorse } from '@/types'
@@ -21,20 +21,23 @@ export default function HomePage() {
   // Memoize to avoid passing a new array reference on every render (H-1)
   const selectedMares = useMemo(() => horses.map((h) => h.mare), [horses])
 
-  function handleSelectFromSearch(horse: CatalogHorse | null) {
-    if (horse === null) {
-      setSelectedCatalogHorse(null)
-      setRegisterOpen(true)
-      return
-    }
-    if (selectedMares.includes(horse.mare)) {
-      setConflictMareName(horse.mare)
-      setConflictOpen(true)
-    } else {
-      setSelectedCatalogHorse(horse)
-      setRegisterOpen(true)
-    }
-  }
+  const handleSelectFromSearch = useCallback(
+    (horse: CatalogHorse | null) => {
+      if (horse === null) {
+        setSelectedCatalogHorse(null)
+        setRegisterOpen(true)
+        return
+      }
+      if (selectedMares.includes(horse.mare)) {
+        setConflictMareName(horse.mare)
+        setConflictOpen(true)
+      } else {
+        setSelectedCatalogHorse(horse)
+        setRegisterOpen(true)
+      }
+    },
+    [selectedMares],
+  )
 
   return (
     <div className="container mx-auto p-6 max-w-3xl">

@@ -1,6 +1,6 @@
 # React / Next.js パフォーマンス改善 Issues
 
-vercel-react-best-practices による精査結果。#1は対応済み（commit 34ff1d5）、#3は対応済み（commit d181aa4）、#4は対応済み。
+vercel-react-best-practices による精査結果。#1は対応済み（commit 34ff1d5）、#3は対応済み（commit d181aa4）、#4は対応済み、#5は対応済み。
 
 ---
 
@@ -78,7 +78,7 @@ const handleDelete = useCallback((horse: Horse) => { ... }, [])
 
 ---
 
-## ⬜ #5 home/page.tsx: handleSelectFromSearch の毎レンダー再生成
+## ✅ #5 home/page.tsx: handleSelectFromSearch の毎レンダー再生成（対応済み）
 
 **優先度: MEDIUM**
 **ファイル:** `src/app/(protected)/home/page.tsx:24-37`
