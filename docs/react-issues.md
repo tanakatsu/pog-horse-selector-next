@@ -1,6 +1,6 @@
 # React / Next.js パフォーマンス改善 Issues
 
-vercel-react-best-practices による精査結果。#1は対応済み（commit 34ff1d5）、#3は対応済み（commit d181aa4）。
+vercel-react-best-practices による精査結果。#1は対応済み（commit 34ff1d5）、#3は対応済み（commit d181aa4）、#4は対応済み。
 
 ---
 
@@ -53,7 +53,7 @@ const form = useForm<HorseFormInput>({ resolver: zodResolver(schema), ... })
 
 ---
 
-## ⬜ #4 HorseListClient: ハンドラ関数の毎レンダー再生成
+## ✅ #4 HorseListClient: ハンドラ関数の毎レンダー再生成（対応済み）
 
 **優先度: MEDIUM**
 **ファイル:** `src/components/horselist/HorseListClient.tsx:30-38`

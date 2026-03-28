@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 import { usePogStore } from '@/store/pogStore'
 import type { Horse } from '@/types'
@@ -27,25 +27,25 @@ export default function HorseListClient({ ownerName }: Props) {
   const [deleteOpen, setDeleteOpen] = useState(false)
   const [deleteTarget, setDeleteTarget] = useState<Horse | null>(null)
 
-  const handleEdit = (horse: Horse) => {
+  const handleEdit = useCallback((horse: Horse) => {
     setEditTarget(horse)
     setEditOpen(true)
-  }
+  }, [])
 
-  const handleDelete = (horse: Horse) => {
+  const handleDelete = useCallback((horse: Horse) => {
     setDeleteTarget(horse)
     setDeleteOpen(true)
-  }
+  }, [])
 
-  const handleEditOpenChange = (open: boolean) => {
+  const handleEditOpenChange = useCallback((open: boolean) => {
     setEditOpen(open)
     if (!open) setEditTarget(null)
-  }
+  }, [])
 
-  const handleDeleteOpenChange = (open: boolean) => {
+  const handleDeleteOpenChange = useCallback((open: boolean) => {
     setDeleteOpen(open)
     if (!open) setDeleteTarget(null)
-  }
+  }, [])
 
   return (
     <>

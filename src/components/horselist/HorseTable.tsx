@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { memo, useState, useMemo } from 'react'
 import { Pencil, Trash2 } from 'lucide-react'
 import type { Horse } from '@/types'
 import { Button } from '@/components/ui/button'
@@ -23,7 +23,7 @@ type Props = {
   onDelete: (horse: Horse) => void
 }
 
-export default function HorseTable({ horses, totalHorseCount, onEdit, onDelete }: Props) {
+const HorseTable = memo(function HorseTable({ horses, totalHorseCount, onEdit, onDelete }: Props) {
   const [query, setQuery] = useState('')
   const [page, setPage] = useState(1)
 
@@ -145,4 +145,6 @@ export default function HorseTable({ horses, totalHorseCount, onEdit, onDelete }
       )}
     </div>
   )
-}
+})
+
+export default HorseTable
