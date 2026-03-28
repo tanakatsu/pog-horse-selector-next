@@ -229,12 +229,6 @@ npm run test:e2e
 npm run test:e2e:ui
 ```
 
-### コミット前チェック
-
-```bash
-npm run type-check && npm run lint && npm run test
-```
-
 ### E2Eテスト用環境変数
 
 E2Eテストを実行する場合は `.env.test.example` をコピーして `.env.test` を作成し、テスト用Supabaseプロジェクトの接続情報を設定してください。
