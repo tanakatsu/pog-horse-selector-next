@@ -35,11 +35,11 @@ export default function AppBar() {
         <div className="flex items-center gap-4">
           <Link
             href="/home"
-            className="text-sm font-semibold tracking-widest text-foreground uppercase hover:opacity-80 transition-opacity"
+            className="text-sm font-semibold tracking-widest text-foreground uppercase hover:opacity-80 transition-opacity focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:rounded"
           >
             {APP_TITLE}
           </Link>
-          <nav className="flex items-center gap-1">
+          <nav className="flex items-center gap-1" aria-label="メインナビゲーション">
             {navLinks.map(({ href, label }) => (
               <Link
                 key={href}

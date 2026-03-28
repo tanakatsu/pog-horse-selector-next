@@ -186,10 +186,14 @@ export default function HorseRegisterDialog({ open, onOpenChange, catalogHorse, 
                       className="space-y-1"
                     >
                       {owners.map((owner) => (
-                        <div key={owner.id} className="flex items-center gap-2">
+                        <Label
+                          key={owner.id}
+                          htmlFor={`owner-${owner.id}`}
+                          className="flex items-center gap-2 cursor-pointer font-normal"
+                        >
                           <RadioGroupItem value={String(owner.id)} id={`owner-${owner.id}`} />
-                          <Label htmlFor={`owner-${owner.id}`}>{owner.name}</Label>
-                        </div>
+                          {owner.name}
+                        </Label>
                       ))}
                     </RadioGroup>
                   </FormControl>

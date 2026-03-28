@@ -94,7 +94,7 @@ export default function OwnerFormDialog({ open, onOpenChange, editTarget }: Prop
                 <FormItem>
                   <FormLabel>オーナー名</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input autoComplete="off" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

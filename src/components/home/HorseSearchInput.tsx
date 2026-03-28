@@ -75,7 +75,11 @@ export default function HorseSearchInput({
       <p className="text-xs text-muted-foreground mb-1">
         {targetYear}年度カタログ: {catalogue.length}頭
       </p>
-      <Command shouldFilter={false} className="rounded-lg border shadow-none">
+      <Command
+        shouldFilter={false}
+        className="rounded-lg border shadow-none"
+        aria-disabled={isDisabled}
+      >
         <CommandInput
           placeholder="母馬名で検索…"
           value={query}

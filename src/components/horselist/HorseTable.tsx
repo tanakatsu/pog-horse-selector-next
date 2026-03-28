@@ -78,10 +78,12 @@ const HorseTable = memo(function HorseTable({ horses, totalHorseCount, onEdit, o
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <p className="text-sm text-muted-foreground">
-          全オーナー合計: <span className="font-semibold text-foreground">{totalHorseCount}頭</span>
+          全オーナー合計:{' '}
+          <span className="font-semibold text-foreground tabular-nums">{totalHorseCount}頭</span>
         </p>
         <p className="text-sm text-muted-foreground">
-          このオーナー: <span className="font-semibold text-foreground">{horses.length}頭</span>
+          このオーナー:{' '}
+          <span className="font-semibold text-foreground tabular-nums">{horses.length}頭</span>
         </p>
       </div>
 

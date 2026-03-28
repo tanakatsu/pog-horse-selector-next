@@ -32,7 +32,7 @@ export default function OwnerList() {
         >
           <Link
             href={`/horselist/${encodeURIComponent(owner.name)}`}
-            className="font-medium hover:underline"
+            className="font-medium hover:underline truncate min-w-0"
           >
             {owner.no !== null && (
               <span className="mr-2 text-muted-foreground text-sm">#{owner.no}</span>
