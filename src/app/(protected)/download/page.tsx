@@ -16,7 +16,9 @@ export default function DownloadPage() {
         登録済みの馬データをCSV形式でダウンロードします（BOM付きUTF-8）。
       </p>
       {loading ? (
-        <p className="text-muted-foreground">読み込み中...</p>
+        <p className="text-muted-foreground" aria-live="polite">
+          読み込み中…
+        </p>
       ) : (
         <>
           <p className="text-sm text-muted-foreground">合計 {horses.length} 頭</p>

@@ -58,7 +58,12 @@ export default function ResetPasswordPage() {
                 <FormItem>
                   <FormLabel>新しいパスワード</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="6文字以上" {...field} />
+                    <Input
+                      type="password"
+                      placeholder="6文字以上"
+                      autoComplete="new-password"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -71,13 +76,22 @@ export default function ResetPasswordPage() {
                 <FormItem>
                   <FormLabel>パスワード（確認）</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="パスワードを再入力" {...field} />
+                    <Input
+                      type="password"
+                      placeholder="パスワードを再入力"
+                      autoComplete="new-password"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            {rootError && <p className="text-sm font-medium text-destructive">{rootError}</p>}
+            {rootError && (
+              <p className="text-sm font-medium text-destructive" aria-live="polite">
+                {rootError}
+              </p>
+            )}
             <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
               {form.formState.isSubmitting ? '更新中...' : 'パスワードを更新'}
             </Button>

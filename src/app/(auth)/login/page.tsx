@@ -62,7 +62,13 @@ export default function LoginPage() {
                 <FormItem>
                   <FormLabel>メールアドレス</FormLabel>
                   <FormControl>
-                    <Input type="email" placeholder="example@email.com" {...field} />
+                    <Input
+                      type="email"
+                      placeholder="example@email.com"
+                      autoComplete="email"
+                      spellCheck={false}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -75,13 +81,22 @@ export default function LoginPage() {
                 <FormItem>
                   <FormLabel>パスワード</FormLabel>
                   <FormControl>
-                    <Input type="password" placeholder="6文字以上" {...field} />
+                    <Input
+                      type="password"
+                      placeholder="6文字以上"
+                      autoComplete="current-password"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            {rootError && <p className="text-sm font-medium text-destructive">{rootError}</p>}
+            {rootError && (
+              <p className="text-sm font-medium text-destructive" aria-live="polite">
+                {rootError}
+              </p>
+            )}
             <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
               {form.formState.isSubmitting ? 'ログイン中...' : 'ログイン'}
             </Button>

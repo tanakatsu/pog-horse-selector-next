@@ -58,7 +58,11 @@ export default function OwnerDeleteDialog({ open, onOpenChange, target }: Props)
             {target?.name} を削除します。関連する馬もすべて削除されます。この操作は取り消せません。
           </DialogDescription>
         </DialogHeader>
-        {error && <p className="text-[0.8rem] font-medium text-destructive">{error}</p>}
+        {error && (
+          <p className="text-[0.8rem] font-medium text-destructive" aria-live="polite">
+            {error}
+          </p>
+        )}
         <DialogFooter>
           <Button
             type="button"

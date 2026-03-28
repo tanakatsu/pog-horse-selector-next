@@ -198,7 +198,7 @@ export default function HorseRegisterDialog({ open, onOpenChange, catalogHorse, 
               )}
             />
             {form.formState.errors.root && (
-              <p className="text-[0.8rem] font-medium text-destructive">
+              <p className="text-[0.8rem] font-medium text-destructive" aria-live="polite">
                 {form.formState.errors.root.message}
               </p>
             )}

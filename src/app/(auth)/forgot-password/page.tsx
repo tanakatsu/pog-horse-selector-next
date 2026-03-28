@@ -75,13 +75,23 @@ export default function ForgotPasswordPage() {
                 <FormItem>
                   <FormLabel>メールアドレス</FormLabel>
                   <FormControl>
-                    <Input type="email" placeholder="example@email.com" {...field} />
+                    <Input
+                      type="email"
+                      placeholder="example@email.com"
+                      autoComplete="email"
+                      spellCheck={false}
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            {rootError && <p className="text-sm font-medium text-destructive">{rootError}</p>}
+            {rootError && (
+              <p className="text-sm font-medium text-destructive" aria-live="polite">
+                {rootError}
+              </p>
+            )}
             <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
               {form.formState.isSubmitting ? '送信中...' : 'リセットメールを送信'}
             </Button>

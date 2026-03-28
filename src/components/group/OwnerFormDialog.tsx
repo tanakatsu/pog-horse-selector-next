@@ -125,7 +125,7 @@ export default function OwnerFormDialog({ open, onOpenChange, editTarget }: Prop
               )}
             />
             {form.formState.errors.root && (
-              <p className="text-[0.8rem] font-medium text-destructive">
+              <p className="text-[0.8rem] font-medium text-destructive" aria-live="polite">
                 {form.formState.errors.root.message}
               </p>
             )}
