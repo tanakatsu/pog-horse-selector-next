@@ -30,7 +30,7 @@ async function registerHorseManually(
     ownerName: string
   },
 ) {
-  const searchInput = page.getByPlaceholder('母馬名で検索...')
+  const searchInput = page.getByPlaceholder('母馬名で検索…')
   await searchInput.fill(opts.mare)
   await page.getByRole('button', { name: '手動で登録' }).click()
   await expect(page.getByRole('dialog', { name: '馬を登録' })).toBeVisible()
@@ -71,7 +71,7 @@ test.describe('馬選択（/home）', () => {
     await expect(page.getByRole('heading', { name: '馬選択' })).toBeVisible()
 
     // オーナーが0人の状態では検索入力欄が disabled であることを確認
-    const searchInput = page.getByPlaceholder('母馬名で検索...')
+    const searchInput = page.getByPlaceholder('母馬名で検索…')
     await expect(searchInput).toBeDisabled()
   })
 
@@ -89,7 +89,7 @@ test.describe('馬選択（/home）', () => {
     await expect(page.getByRole('heading', { name: '馬選択' })).toBeVisible()
 
     // カタログに存在する母馬名の先頭部分で検索
-    const searchInput = page.getByPlaceholder('母馬名で検索...')
+    const searchInput = page.getByPlaceholder('母馬名で検索…')
     await expect(searchInput).toBeEnabled()
     await searchInput.fill('アーモンドアイ')
 
@@ -117,7 +117,7 @@ test.describe('馬選択（/home）', () => {
     const beforeCount = await ownerItem.getByText(/\d+ 頭/).textContent()
 
     // カタログから馬を検索・選択
-    const searchInput = page.getByPlaceholder('母馬名で検索...')
+    const searchInput = page.getByPlaceholder('母馬名で検索…')
     await searchInput.fill('アーモンドアイ')
     await page.getByRole('option', { name: new RegExp(CATALOGUE_MARE) }).click()
 
@@ -156,7 +156,7 @@ test.describe('馬選択（/home）', () => {
     const mareName = `存在しないメア_${Date.now()}`
 
     // 存在しない母名で検索 → 「手動で登録」ボタンが表示される
-    const searchInput = page.getByPlaceholder('母馬名で検索...')
+    const searchInput = page.getByPlaceholder('母馬名で検索…')
     await searchInput.fill(mareName)
     await expect(page.getByText('見つかりません')).toBeVisible()
     await page.getByRole('button', { name: '手動で登録' }).click()
@@ -200,7 +200,7 @@ test.describe('馬選択（/home）', () => {
     })
 
     // 2頭目を同じ母馬で登録試行
-    const searchInput = page.getByPlaceholder('母馬名で検索...')
+    const searchInput = page.getByPlaceholder('母馬名で検索…')
     await searchInput.fill(mareName)
     await page.getByRole('button', { name: '手動で登録' }).click()
 
@@ -241,7 +241,7 @@ test.describe('馬選択（/home）', () => {
     })
 
     // 2頭目を同じ馬名で登録試行（母馬は別）
-    const searchInput = page.getByPlaceholder('母馬名で検索...')
+    const searchInput = page.getByPlaceholder('母馬名で検索…')
     await searchInput.fill(mareName2)
     await page.getByRole('button', { name: '手動で登録' }).click()
 
@@ -273,7 +273,7 @@ test.describe('馬選択（/home）', () => {
 
     // 3頭登録
     for (let i = 1; i <= 3; i++) {
-      const searchInput = page.getByPlaceholder('母馬名で検索...')
+      const searchInput = page.getByPlaceholder('母馬名で検索…')
       await searchInput.fill(`採番メア${i}_${suffix}`)
       await page.getByRole('button', { name: '手動で登録' }).click()
       await expect(page.getByRole('dialog', { name: '馬を登録' })).toBeVisible()
@@ -329,7 +329,7 @@ test.describe('馬選択（/home）', () => {
     })
 
     // 同じ母馬名で検索 → ✔マークが表示されることを確認
-    const searchInput = page.getByPlaceholder('母馬名で検索...')
+    const searchInput = page.getByPlaceholder('母馬名で検索…')
     await searchInput.fill(mareName)
 
     // 手動で登録したメアは catalog に存在しないので CommandEmpty が表示されるだけ

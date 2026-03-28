@@ -105,7 +105,7 @@ test.describe('オーナー管理（/group）', () => {
     await expect(page.getByRole('heading', { name: '馬選択' })).toBeVisible()
 
     // 存在しない母名で検索 → 手動登録フォームを開く
-    const searchInput = page.getByPlaceholder('母馬名で検索...')
+    const searchInput = page.getByPlaceholder('母馬名で検索…')
     await searchInput.fill(mareName)
     await page.getByRole('button', { name: '手動で登録' }).click()
 

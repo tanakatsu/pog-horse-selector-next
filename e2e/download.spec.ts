@@ -73,7 +73,7 @@ test.describe('CSVエクスポート（/download）', () => {
     await expect(page.getByRole('heading', { name: '馬選択' })).toBeVisible()
     const horseName = `ダウンロード馬_${Date.now()}`
     const mareName = `ダウンロードメア_${Date.now()}`
-    const searchInput = page.getByPlaceholder('母馬名で検索...')
+    const searchInput = page.getByPlaceholder('母馬名で検索…')
     await searchInput.fill(mareName)
     await page.getByRole('button', { name: '手動で登録' }).click()
     await expect(page.getByRole('dialog', { name: '馬を登録' })).toBeVisible()

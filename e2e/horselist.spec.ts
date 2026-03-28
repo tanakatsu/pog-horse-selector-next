@@ -26,7 +26,7 @@ async function setupOwnerAndHorses(page: Page, ownerName: string) {
   await expect(page.getByRole('heading', { name: '馬選択' })).toBeVisible()
   for (let i = 1; i <= 2; i++) {
     const mare = `テストメア${i}_${ownerName}`
-    await page.getByPlaceholder('母馬名で検索...').fill(mare)
+    await page.getByPlaceholder('母馬名で検索…').fill(mare)
     await page.getByRole('button', { name: '手動で登録' }).click()
     await expect(page.getByRole('dialog', { name: '馬を登録' })).toBeVisible()
     await page.getByRole('textbox', { name: '馬名' }).fill(`テスト馬${i}_${ownerName}`)
