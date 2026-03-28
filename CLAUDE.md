@@ -46,6 +46,3 @@ npm run type-check && npm run lint && npm run test
 
 `feature/<機能名>` / `fix/<バグ内容>` / `chore/<作業内容>`
 
-## 参考資料
-
-要件定義: `docs/Spec.md` / テスト計画: `docs/TEST_DEFINITION.md` / 実装計画: `docs/PLAN.md`
