@@ -40,7 +40,7 @@ describe('HorseSearchInput', () => {
   it('オーナー未登録時は入力欄が disabled になる', () => {
     usePogStore.setState({ owners: [] })
     render(<HorseSearchInput catalogue={catalogue} onSelect={vi.fn()} selectedMares={[]} />)
-    const input = screen.getByPlaceholderText('母馬名で検索...')
+    const input = screen.getByPlaceholderText('母馬名で検索…')
     expect(input).toBeDisabled()
   })
 
@@ -49,7 +49,7 @@ describe('HorseSearchInput', () => {
 
     render(<HorseSearchInput catalogue={catalogue} onSelect={vi.fn()} selectedMares={[]} />)
 
-    const input = screen.getByPlaceholderText('母馬名で検索...')
+    const input = screen.getByPlaceholderText('母馬名で検索…')
     expect(input).not.toBeDisabled()
   })
 
@@ -59,7 +59,7 @@ describe('HorseSearchInput', () => {
 
     render(<HorseSearchInput catalogue={catalogue} onSelect={vi.fn()} selectedMares={[]} />)
 
-    const input = screen.getByPlaceholderText('母馬名で検索...')
+    const input = screen.getByPlaceholderText('母馬名で検索…')
     await user.type(input, 'キズナ')
 
     expect(screen.getByText('キズナメア')).toBeInTheDocument()
@@ -79,7 +79,7 @@ describe('HorseSearchInput', () => {
       />,
     )
 
-    const input = screen.getByPlaceholderText('母馬名で検索...')
+    const input = screen.getByPlaceholderText('母馬名で検索…')
     await user.type(input, 'キズナ')
 
     // 5 matches exist but only 3 should show
@@ -98,7 +98,7 @@ describe('HorseSearchInput', () => {
       <HorseSearchInput catalogue={catalogue} onSelect={vi.fn()} selectedMares={['キズナメア']} />,
     )
 
-    const input = screen.getByPlaceholderText('母馬名で検索...')
+    const input = screen.getByPlaceholderText('母馬名で検索…')
     await user.type(input, 'キズナ')
 
     // 「指名済み」バッジが表示される
@@ -111,7 +111,7 @@ describe('HorseSearchInput', () => {
 
     render(<HorseSearchInput catalogue={catalogue} onSelect={vi.fn()} selectedMares={[]} />)
 
-    const input = screen.getByPlaceholderText('母馬名で検索...')
+    const input = screen.getByPlaceholderText('母馬名で検索…')
     await user.type(input, 'キズナ')
 
     expect(screen.queryByText('指名済み')).not.toBeInTheDocument()
@@ -124,7 +124,7 @@ describe('HorseSearchInput', () => {
     // 年度外の馬を含まないフィルタ済みカタログを渡す（page.tsxでのフィルタ済み想定）
     render(<HorseSearchInput catalogue={catalogue} onSelect={vi.fn()} selectedMares={[]} />)
 
-    const input = screen.getByPlaceholderText('母馬名で検索...')
+    const input = screen.getByPlaceholderText('母馬名で検索…')
     await user.type(input, 'キズナ')
 
     expect(screen.queryByText('キズナメア別年')).not.toBeInTheDocument()
@@ -146,7 +146,7 @@ describe('HorseSearchInput', () => {
 
     render(<HorseSearchInput catalogue={catalogue} onSelect={onSelect} selectedMares={[]} />)
 
-    const input = screen.getByPlaceholderText('母馬名で検索...')
+    const input = screen.getByPlaceholderText('母馬名で検索…')
     await user.type(input, 'キズナ')
 
     const item = screen.getByText('キズナメア')

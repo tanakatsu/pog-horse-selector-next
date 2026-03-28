@@ -10,7 +10,11 @@ export default function OwnerList() {
   const loading = usePogStore((state) => state.loading)
 
   if (loading) {
-    return <div className="text-center text-muted-foreground py-8">読み込み中...</div>
+    return (
+      <div className="text-center text-muted-foreground py-8" role="status">
+        読み込み中…
+      </div>
+    )
   }
 
   if (owners.length === 0) {

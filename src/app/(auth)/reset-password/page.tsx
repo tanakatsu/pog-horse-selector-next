@@ -93,7 +93,7 @@ export default function ResetPasswordPage() {
               </p>
             )}
             <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-              {form.formState.isSubmitting ? '更新中...' : 'パスワードを更新'}
+              {form.formState.isSubmitting ? '更新中…' : 'パスワードを更新'}
             </Button>
           </form>
         </Form>

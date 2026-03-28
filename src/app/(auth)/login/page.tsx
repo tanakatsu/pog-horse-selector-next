@@ -98,7 +98,7 @@ export default function LoginPage() {
               </p>
             )}
             <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-              {form.formState.isSubmitting ? 'ログイン中...' : 'ログイン'}
+              {form.formState.isSubmitting ? 'ログイン中…' : 'ログイン'}
             </Button>
           </form>
         </Form>

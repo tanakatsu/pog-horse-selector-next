@@ -93,7 +93,7 @@ export default function ForgotPasswordPage() {
               </p>
             )}
             <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-              {form.formState.isSubmitting ? '送信中...' : 'リセットメールを送信'}
+              {form.formState.isSubmitting ? '送信中…' : 'リセットメールを送信'}
             </Button>
           </form>
         </Form>

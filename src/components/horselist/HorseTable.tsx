@@ -62,7 +62,7 @@ const HorseTable = memo(function HorseTable({ horses, totalHorseCount, onEdit, o
       </div>
 
       <Input
-        placeholder="馬名・父・母で検索"
+        placeholder="馬名・父・母で検索…"
         value={query}
         onChange={handleQueryChange}
         aria-label="フリーワード検索"
@@ -102,7 +102,7 @@ const HorseTable = memo(function HorseTable({ horses, totalHorseCount, onEdit, o
                       aria-label={`${horse.name}を編集`}
                       onClick={() => onEdit(horse)}
                     >
-                      <Pencil />
+                      <Pencil aria-hidden="true" />
                     </Button>
                     <Button
                       variant="ghost"
@@ -110,7 +110,7 @@ const HorseTable = memo(function HorseTable({ horses, totalHorseCount, onEdit, o
                       aria-label={`${horse.name}を削除`}
                       onClick={() => onDelete(horse)}
                     >
-                      <Trash2 />
+                      <Trash2 aria-hidden="true" />
                     </Button>
                   </div>
                 </TableCell>

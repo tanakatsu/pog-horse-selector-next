@@ -54,7 +54,7 @@ export default function OwnerTable({ onEdit, onDelete }: Props) {
                     aria-label={`${owner.name}を編集`}
                     onClick={() => onEdit(owner)}
                   >
-                    <Pencil />
+                    <Pencil aria-hidden="true" />
                   </Button>
                   <Button
                     variant="ghost"
@@ -62,7 +62,7 @@ export default function OwnerTable({ onEdit, onDelete }: Props) {
                     aria-label={`${owner.name}を削除`}
                     onClick={() => onDelete(owner)}
                   >
-                    <Trash2 />
+                    <Trash2 aria-hidden="true" />
                   </Button>
                 </div>
               </TableCell>

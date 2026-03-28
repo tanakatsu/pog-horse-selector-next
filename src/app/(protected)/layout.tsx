@@ -35,7 +35,9 @@ export default async function ProtectedLayout({ children }: { children: React.Re
   return (
     <DataProvider initialOwners={initialOwners} initialHorses={initialHorses}>
       <AppBar />
-      <main className="container mx-auto px-4 py-6">{children}</main>
+      <main id="main-content" className="container mx-auto px-4 py-6">
+        {children}
+      </main>
     </DataProvider>
   )
 }

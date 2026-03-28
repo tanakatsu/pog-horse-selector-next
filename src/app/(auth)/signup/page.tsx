@@ -145,7 +145,7 @@ export default function SignupPage() {
               </p>
             )}
             <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-              {form.formState.isSubmitting ? '登録中...' : 'アカウントを作成'}
+              {form.formState.isSubmitting ? '登録中…' : 'アカウントを作成'}
             </Button>
           </form>
         </Form>

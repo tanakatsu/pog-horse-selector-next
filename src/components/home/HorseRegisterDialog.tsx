@@ -207,7 +207,7 @@ export default function HorseRegisterDialog({ open, onOpenChange, catalogHorse, 
                 キャンセル
               </Button>
               <Button type="submit" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? '登録中...' : '登録'}
+                {form.formState.isSubmitting ? '登録中…' : '登録'}
               </Button>
             </DialogFooter>
           </form>

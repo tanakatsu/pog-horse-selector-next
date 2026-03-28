@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 
@@ -17,6 +17,10 @@ export const metadata: Metadata = {
   description: 'POGドラフト会議用馬選択アプリ',
 }
 
+export const viewport: Viewport = {
+  viewportFit: 'cover',
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -24,7 +28,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-2 focus:bg-background focus:text-foreground"
+        >
+          メインコンテンツへ
+        </a>
+        {children}
+      </body>
     </html>
   )
 }

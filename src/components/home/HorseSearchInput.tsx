@@ -77,7 +77,7 @@ export default function HorseSearchInput({
       </p>
       <Command shouldFilter={false} className="rounded-lg border shadow-none">
         <CommandInput
-          placeholder="母馬名で検索..."
+          placeholder="母馬名で検索…"
           value={query}
           onValueChange={handleInputChange}
           disabled={isDisabled}
