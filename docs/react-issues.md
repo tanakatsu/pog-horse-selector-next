@@ -1,6 +1,6 @@
 # React / Next.js パフォーマンス改善 Issues
 
-vercel-react-best-practices による精査結果。#1は対応済み（commit 34ff1d5）、#3は対応済み（commit d181aa4）、#4は対応済み、#5は対応済み。
+vercel-react-best-practices による精査結果。#1は対応済み（commit 34ff1d5）、#2は対応済み、#3は対応済み（commit d181aa4）、#4は対応済み、#5は対応済み。
 
 ---
 
@@ -10,7 +10,7 @@ vercel-react-best-practices による精査結果。#1は対応済み（commit 3
 
 ---
 
-## ⬜ #2 カタログ JSON のクライアントバンドル削減
+## ✅ #2 カタログ JSON のクライアントバンドル削減（対応済み）
 
 **優先度: HIGH**
 **ファイル:** `src/components/home/HorseSearchInput.tsx:6`

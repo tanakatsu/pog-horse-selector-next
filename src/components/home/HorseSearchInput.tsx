@@ -3,8 +3,7 @@
 import { useState, useRef, useEffect, useMemo } from 'react'
 import { usePogStore } from '@/store/pogStore'
 import type { CatalogHorse } from '@/types'
-import rawCatalogue from '@/data/horse_catalogue.json'
-import { cn, getTargetYear, getCatalogueYear } from '@/lib/utils'
+import { cn, getTargetYear } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
   Command,
@@ -15,15 +14,19 @@ import {
   CommandList,
 } from '@/components/ui/command'
 
-const catalogue = rawCatalogue as CatalogHorse[]
-
 type Props = {
+  catalogue: CatalogHorse[]
   onSelect: (horse: CatalogHorse | null) => void
   selectedMares: string[]
   maxSuggestions?: number
 }
 
-export default function HorseSearchInput({ onSelect, selectedMares, maxSuggestions = 10 }: Props) {
+export default function HorseSearchInput({
+  catalogue,
+  onSelect,
+  selectedMares,
+  maxSuggestions = 10,
+}: Props) {
   const owners = usePogStore((state) => state.owners)
   const loading = usePogStore((state) => state.loading)
   const [query, setQuery] = useState('')
@@ -39,21 +42,15 @@ export default function HorseSearchInput({ onSelect, selectedMares, maxSuggestio
 
   const isDisabled = owners.length === 0 || loading
   const targetYear = String(getTargetYear())
-  const catalogueYear = String(getCatalogueYear())
-
-  const catalogueByYear = useMemo(
-    () => catalogue.filter((h) => h.id.startsWith(catalogueYear)),
-    [catalogueYear],
-  )
 
   const suggestions = useMemo(
     () =>
       query
-        ? catalogueByYear
+        ? catalogue
             .filter((h) => h.mare.toLowerCase().startsWith(query.toLowerCase()))
             .slice(0, maxSuggestions)
         : [],
-    [query, catalogueByYear, maxSuggestions],
+    [query, catalogue, maxSuggestions],
   )
 
   const handleSelect = (horse: CatalogHorse) => {
@@ -76,7 +73,7 @@ export default function HorseSearchInput({ onSelect, selectedMares, maxSuggestio
   return (
     <div className="relative w-full max-w-md">
       <p className="text-xs text-muted-foreground mb-1">
-        {targetYear}年度カタログ: {catalogueByYear.length}頭
+        {targetYear}年度カタログ: {catalogue.length}頭
       </p>
       <Command shouldFilter={false} className="rounded-lg border shadow-none">
         <CommandInput

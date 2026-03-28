@@ -2,21 +2,18 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { usePogStore } from '@/store/pogStore'
-import type { Owner } from '@/types'
+import type { CatalogHorse, Owner } from '@/types'
+import HorseSearchInput from '@/components/home/HorseSearchInput'
 
-vi.mock('@/data/horse_catalogue.json', () => ({
-  default: [
-    { id: '2025000001', name: 'テスト馬1', sire: 'テスト父1', mare: 'キズナメア', sire_count: 1 },
-    { id: '2025000002', name: 'テスト馬2', sire: 'テスト父2', mare: 'キズナメア2', sire_count: 1 },
-    { id: '2025000003', name: 'テスト馬3', sire: 'テスト父3', mare: 'キズナメア3', sire_count: 1 },
-    { id: '2025000004', name: 'テスト馬4', sire: 'テスト父4', mare: 'キズナメア4', sire_count: 1 },
-    { id: '2025000005', name: 'テスト馬5', sire: 'テスト父5', mare: 'キズナメア5', sire_count: 1 },
-    { id: '2025000006', name: 'テスト馬6', sire: 'テスト父6', mare: 'ディープメア', sire_count: 1 },
-    { id: '2026000001', name: '別年度馬', sire: 'テスト父', mare: 'キズナメア別年', sire_count: 1 },
-  ],
-}))
-
-const { default: HorseSearchInput } = await import('@/components/home/HorseSearchInput')
+// フィルタ済みカタログデータ（getCatalogueYear()適用後の想定）
+const catalogue: CatalogHorse[] = [
+  { id: '2025000001', name: 'テスト馬1', sire: 'テスト父1', mare: 'キズナメア', sire_count: 1 },
+  { id: '2025000002', name: 'テスト馬2', sire: 'テスト父2', mare: 'キズナメア2', sire_count: 1 },
+  { id: '2025000003', name: 'テスト馬3', sire: 'テスト父3', mare: 'キズナメア3', sire_count: 1 },
+  { id: '2025000004', name: 'テスト馬4', sire: 'テスト父4', mare: 'キズナメア4', sire_count: 1 },
+  { id: '2025000005', name: 'テスト馬5', sire: 'テスト父5', mare: 'キズナメア5', sire_count: 1 },
+  { id: '2025000006', name: 'テスト馬6', sire: 'テスト父6', mare: 'ディープメア', sire_count: 1 },
+]
 
 function makeOwner(overrides: Partial<Owner> = {}): Owner {
   return {
@@ -42,9 +39,7 @@ afterEach(() => {
 describe('HorseSearchInput', () => {
   it('オーナー未登録時は入力欄が disabled になる', () => {
     usePogStore.setState({ owners: [] })
-
-    render(<HorseSearchInput onSelect={vi.fn()} selectedMares={[]} />)
-
+    render(<HorseSearchInput catalogue={catalogue} onSelect={vi.fn()} selectedMares={[]} />)
     const input = screen.getByPlaceholderText('母馬名で検索...')
     expect(input).toBeDisabled()
   })
@@ -52,7 +47,7 @@ describe('HorseSearchInput', () => {
   it('オーナーが登録されていると入力欄が有効になる', () => {
     usePogStore.setState({ owners: [makeOwner()] })
 
-    render(<HorseSearchInput onSelect={vi.fn()} selectedMares={[]} />)
+    render(<HorseSearchInput catalogue={catalogue} onSelect={vi.fn()} selectedMares={[]} />)
 
     const input = screen.getByPlaceholderText('母馬名で検索...')
     expect(input).not.toBeDisabled()
@@ -62,7 +57,7 @@ describe('HorseSearchInput', () => {
     usePogStore.setState({ owners: [makeOwner()] })
     const user = userEvent.setup()
 
-    render(<HorseSearchInput onSelect={vi.fn()} selectedMares={[]} />)
+    render(<HorseSearchInput catalogue={catalogue} onSelect={vi.fn()} selectedMares={[]} />)
 
     const input = screen.getByPlaceholderText('母馬名で検索...')
     await user.type(input, 'キズナ')
@@ -75,7 +70,14 @@ describe('HorseSearchInput', () => {
     usePogStore.setState({ owners: [makeOwner()] })
     const user = userEvent.setup()
 
-    render(<HorseSearchInput onSelect={vi.fn()} selectedMares={[]} maxSuggestions={3} />)
+    render(
+      <HorseSearchInput
+        catalogue={catalogue}
+        onSelect={vi.fn()}
+        selectedMares={[]}
+        maxSuggestions={3}
+      />,
+    )
 
     const input = screen.getByPlaceholderText('母馬名で検索...')
     await user.type(input, 'キズナ')
@@ -92,7 +94,9 @@ describe('HorseSearchInput', () => {
     usePogStore.setState({ owners: [makeOwner()] })
     const user = userEvent.setup()
 
-    render(<HorseSearchInput onSelect={vi.fn()} selectedMares={['キズナメア']} />)
+    render(
+      <HorseSearchInput catalogue={catalogue} onSelect={vi.fn()} selectedMares={['キズナメア']} />,
+    )
 
     const input = screen.getByPlaceholderText('母馬名で検索...')
     await user.type(input, 'キズナ')
@@ -105,7 +109,7 @@ describe('HorseSearchInput', () => {
     usePogStore.setState({ owners: [makeOwner()] })
     const user = userEvent.setup()
 
-    render(<HorseSearchInput onSelect={vi.fn()} selectedMares={[]} />)
+    render(<HorseSearchInput catalogue={catalogue} onSelect={vi.fn()} selectedMares={[]} />)
 
     const input = screen.getByPlaceholderText('母馬名で検索...')
     await user.type(input, 'キズナ')
@@ -117,7 +121,8 @@ describe('HorseSearchInput', () => {
     usePogStore.setState({ owners: [makeOwner()] })
     const user = userEvent.setup()
 
-    render(<HorseSearchInput onSelect={vi.fn()} selectedMares={[]} />)
+    // 年度外の馬を含まないフィルタ済みカタログを渡す（page.tsxでのフィルタ済み想定）
+    render(<HorseSearchInput catalogue={catalogue} onSelect={vi.fn()} selectedMares={[]} />)
 
     const input = screen.getByPlaceholderText('母馬名で検索...')
     await user.type(input, 'キズナ')
@@ -128,9 +133,9 @@ describe('HorseSearchInput', () => {
   it('対象年度のカタログ頭数が表示される', () => {
     usePogStore.setState({ owners: [makeOwner()] })
 
-    render(<HorseSearchInput onSelect={vi.fn()} selectedMares={[]} />)
+    render(<HorseSearchInput catalogue={catalogue} onSelect={vi.fn()} selectedMares={[]} />)
 
-    // 2027年度POG対象（horse_idが2025で始まる）馬は6頭（モックデータ）
+    // 2027年度POG対象（horse_idが2025で始まる）馬は6頭（テストデータ）
     expect(screen.getByText('2027年度カタログ: 6頭')).toBeInTheDocument()
   })
 
@@ -139,7 +144,7 @@ describe('HorseSearchInput', () => {
     const user = userEvent.setup()
     const onSelect = vi.fn()
 
-    render(<HorseSearchInput onSelect={onSelect} selectedMares={[]} />)
+    render(<HorseSearchInput catalogue={catalogue} onSelect={onSelect} selectedMares={[]} />)
 
     const input = screen.getByPlaceholderText('母馬名で検索...')
     await user.type(input, 'キズナ')
