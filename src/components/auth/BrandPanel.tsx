@@ -13,6 +13,9 @@ export default function BrandPanel() {
       />
       <div className="relative text-center">
         <p className="text-[var(--pog-gold)] font-serif text-6xl font-bold tracking-widest">POG</p>
+        <p className="text-[var(--pog-gold)]/70 text-sm font-semibold tracking-[0.3em] mt-1 uppercase">
+          Horse Selector
+        </p>
         <p className="text-white/50 text-xs tracking-[0.3em] mt-2 uppercase">Paper Owner Game</p>
       </div>
     </div>
