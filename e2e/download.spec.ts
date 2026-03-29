@@ -38,10 +38,10 @@ test.describe('CSVエクスポート（/download）', () => {
     // 馬が登録済みの場合はボタンが有効になりテストが失敗します。
     await loginAsTestUser(page)
     await page.goto('/download')
-    await expect(page.getByRole('heading', { name: 'CSVダウンロード' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'データエクスポート' })).toBeVisible()
 
     // 読み込み完了を待つ
-    await expect(page.getByText('読み込み中...')).not.toBeVisible({ timeout: 10000 })
+    await expect(page.getByText('読み込み中…')).not.toBeVisible({ timeout: 10000 })
 
     // ダウンロードボタンが存在することを確認
     const downloadButton = page.getByRole('button', { name: 'CSVダウンロード' })
@@ -86,10 +86,10 @@ test.describe('CSVエクスポート（/download）', () => {
 
     // /download でダウンロードボタンをクリック → download イベントが発生することを確認
     await page.goto('/download')
-    await expect(page.getByRole('heading', { name: 'CSVダウンロード' })).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'データエクスポート' })).toBeVisible()
 
     // 読み込み完了を待つ
-    await expect(page.getByText('読み込み中...')).not.toBeVisible({ timeout: 10000 })
+    await expect(page.getByText('読み込み中…')).not.toBeVisible({ timeout: 10000 })
 
     const downloadButton = page.getByRole('button', { name: 'CSVダウンロード' })
     await expect(downloadButton).toBeEnabled()
