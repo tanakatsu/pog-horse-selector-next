@@ -60,7 +60,7 @@ export default function AppBar() {
         <Button
           variant="outline"
           size="sm"
-          className="border-[var(--pog-gold)] text-[var(--pog-gold)] hover:bg-[var(--pog-gold)]/15 hover:text-[var(--pog-gold)] focus-visible:ring-[var(--pog-gold)] focus-visible:ring-offset-[var(--pog-green)]"
+          className="bg-[var(--pog-gold)]/10 border-[var(--pog-gold)] text-[var(--pog-gold)] hover:bg-[var(--pog-gold)]/20 hover:text-[var(--pog-gold)] focus-visible:ring-[var(--pog-gold)] focus-visible:ring-offset-[var(--pog-green)]"
           onClick={() => void handleLogout()}
         >
           ログアウト
