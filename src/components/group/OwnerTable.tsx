@@ -26,11 +26,12 @@ export default function OwnerTable({ onEdit, onDelete }: Props) {
   return (
     <Table>
       <TableHeader>
-        <TableRow>
-          <TableHead>番号</TableHead>
-          <TableHead>オーナー名</TableHead>
-          <TableHead>指名数</TableHead>
-          <TableHead>操作</TableHead>
+        {/* hover:bg-[var(--pog-green)] でデフォルトの hover 変色を抑制 */}
+        <TableRow className="bg-[var(--pog-green)] hover:bg-[var(--pog-green)]">
+          <TableHead className="text-white/80 font-medium">番号</TableHead>
+          <TableHead className="text-white/80 font-medium">オーナー名</TableHead>
+          <TableHead className="text-white/80 font-medium">指名数</TableHead>
+          <TableHead className="text-white/80 font-medium">操作</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -42,7 +43,10 @@ export default function OwnerTable({ onEdit, onDelete }: Props) {
           </TableRow>
         ) : (
           owners.map((owner) => (
-            <TableRow key={owner.id}>
+            <TableRow
+              key={owner.id}
+              className="hover:bg-[var(--pog-gold-subtle)] transition-colors"
+            >
               <TableCell>{owner.no ?? '-'}</TableCell>
               <TableCell>{owner.name}</TableCell>
               <TableCell>{horseCounts[owner.id] ?? 0}</TableCell>
