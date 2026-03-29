@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useMemo } from 'react'
 import { usePogStore } from '@/store/pogStore'
 import type { CatalogHorse } from '@/types'
-import { cn } from '@/lib/utils'
+import { cn, getTargetYear } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
   Command,
@@ -134,7 +134,7 @@ export default function HorseSearchInput({
       </Command>
       {/* top-[13px]: CommandInput wrapper has p-1(4px) + Command p-1(4px) = 8px offset, InputGroup h-8(32px) center at 24px, text-xs ~18px line-height -> (24-18/2)≈15px */}
       <span className="absolute right-3 top-[15px] text-xs text-muted-foreground/60 tabular-nums whitespace-nowrap pointer-events-none">
-        {catalogue.length}頭
+        {catalogue.length}頭（{getTargetYear()}年度）
       </span>
     </div>
   )

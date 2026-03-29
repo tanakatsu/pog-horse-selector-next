@@ -135,8 +135,8 @@ describe('HorseSearchInput', () => {
 
     render(<HorseSearchInput catalogue={catalogue} onSelect={vi.fn()} selectedMares={[]} />)
 
-    // カタログ頭数が検索ボックス内に表示される
-    expect(screen.getByText('6頭')).toBeInTheDocument()
+    // カタログ頭数と年度が検索ボックス内に表示される
+    expect(screen.getByText('6頭（2027年度）')).toBeInTheDocument()
   })
 
   it('サジェスト項目を選択するとonSelectが呼ばれる', async () => {
