@@ -37,12 +37,12 @@ export default function GroupPage() {
   return (
     <div className="container mx-auto p-6 max-w-3xl">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">オーナー管理</h1>
+        <h1 className="text-2xl font-bold text-balance">オーナー管理</h1>
         <Button
           className="bg-[var(--pog-green)] hover:bg-[var(--pog-green)]/90 text-white"
           onClick={() => setFormOpen(true)}
         >
-          <Plus />
+          <Plus aria-hidden="true" />
           オーナーを追加
         </Button>
       </div>

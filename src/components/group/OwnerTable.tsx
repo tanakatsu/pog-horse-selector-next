@@ -50,9 +50,9 @@ export default function OwnerTable({ onEdit, onDelete }: Props) {
               key={owner.id}
               className="hover:bg-[var(--pog-gold-subtle)] transition-colors"
             >
-              <TableCell>{owner.no ?? '-'}</TableCell>
+              <TableCell className="tabular-nums">{owner.no ?? '-'}</TableCell>
               <TableCell>{owner.name}</TableCell>
-              <TableCell>{horseCounts[owner.id] ?? 0}</TableCell>
+              <TableCell className="tabular-nums">{horseCounts[owner.id] ?? 0}</TableCell>
               <TableCell>
                 <div className="flex gap-2">
                   <Button

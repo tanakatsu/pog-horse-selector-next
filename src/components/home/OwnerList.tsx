@@ -37,7 +37,7 @@ export default function OwnerList() {
       {owners.map((owner) => (
         <li
           key={owner.id}
-          className="group relative flex items-center gap-3 rounded-xl border border-[var(--pog-green)]/10 bg-white px-4 py-3.5 hover:bg-[var(--pog-green)]/5 hover:border-[var(--pog-green)]/25 transition-all duration-150"
+          className="group relative flex items-center gap-3 rounded-xl border border-[var(--pog-green)]/10 bg-white px-4 py-3.5 hover:bg-[var(--pog-green)]/5 hover:border-[var(--pog-green)]/25 transition-[background-color,border-color] duration-150"
         >
           {/* overlay link: 行全体をクリック可能にする */}
           <Link

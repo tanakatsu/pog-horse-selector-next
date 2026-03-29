@@ -45,7 +45,7 @@ export default function HomePageClient({ catalogue }: Props) {
 
   return (
     <div className="container mx-auto p-6 max-w-3xl">
-      <h1 className="text-2xl font-bold mb-6">馬選択</h1>
+      <h1 className="text-2xl font-bold mb-6 text-balance">馬選択</h1>
       <div className="mb-6">
         <HorseSearchInput
           catalogue={catalogue}

@@ -56,7 +56,10 @@ export default function ForgotPasswordPage() {
             <p className="text-sm text-muted-foreground mb-6">
               パスワードリセット用のメールを送信しました。メールのリンクからパスワードをリセットしてください。
             </p>
-            <Link href="/login" className="text-sm text-muted-foreground hover:underline">
+            <Link
+              href="/login"
+              className="text-sm text-muted-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+            >
               ログインに戻る
             </Link>
           </div>
@@ -105,7 +108,10 @@ export default function ForgotPasswordPage() {
             </form>
           </Form>
           <div className="mt-6">
-            <Link href="/login" className="text-sm text-muted-foreground hover:underline">
+            <Link
+              href="/login"
+              className="text-sm text-muted-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+            >
               ログインに戻る
             </Link>
           </div>

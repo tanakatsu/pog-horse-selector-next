@@ -65,7 +65,10 @@ export default function SignupPage() {
               ご登録のメールアドレスに確認メールを送信しました。
               メール内のリンクをクリックして登録を完了してください。
             </p>
-            <Link href="/login" className="text-sm text-muted-foreground hover:underline">
+            <Link
+              href="/login"
+              className="text-sm text-muted-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+            >
               ログインに戻る
             </Link>
           </div>
@@ -152,7 +155,10 @@ export default function SignupPage() {
           </Form>
           <p className="text-sm text-muted-foreground mt-6">
             すでにアカウントをお持ちの方は{' '}
-            <Link href="/login" className="font-medium hover:underline">
+            <Link
+              href="/login"
+              className="font-medium hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+            >
               ログイン
             </Link>
           </p>

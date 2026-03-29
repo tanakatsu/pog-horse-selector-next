@@ -128,7 +128,11 @@ export default function HorseRegisterDialog({ open, onOpenChange, catalogHorse, 
                 <FormItem>
                   <FormLabel>馬ID（任意）</FormLabel>
                   <FormControl>
-                    <Input placeholder={`${getCatalogueYear()}105001`} {...field} />
+                    <Input
+                      placeholder={`${getCatalogueYear()}105001`}
+                      autoComplete="off"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -141,7 +145,11 @@ export default function HorseRegisterDialog({ open, onOpenChange, catalogHorse, 
                 <FormItem>
                   <FormLabel>馬名</FormLabel>
                   <FormControl>
-                    <Input placeholder={`キズナの${getCatalogueYear()}`} {...field} />
+                    <Input
+                      placeholder={`キズナの${getCatalogueYear()}`}
+                      autoComplete="off"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -154,7 +162,7 @@ export default function HorseRegisterDialog({ open, onOpenChange, catalogHorse, 
                 <FormItem>
                   <FormLabel>父馬</FormLabel>
                   <FormControl>
-                    <Input placeholder="キズナ" {...field} />
+                    <Input placeholder="キズナ" autoComplete="off" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -167,7 +175,7 @@ export default function HorseRegisterDialog({ open, onOpenChange, catalogHorse, 
                 <FormItem>
                   <FormLabel>母馬</FormLabel>
                   <FormControl>
-                    <Input placeholder="テストメア" {...field} />
+                    <Input placeholder="テストメア" autoComplete="off" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

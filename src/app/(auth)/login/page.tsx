@@ -48,10 +48,10 @@ export default function LoginPage() {
 
   if (isRedirecting) {
     return (
-      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[var(--pog-green)] relative overflow-hidden">
+      <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[var(--pog-green)] overflow-hidden">
         <BrandContent>
           <svg
-            className="mt-8 w-8 h-8 animate-spin text-[var(--pog-gold)]/70"
+            className="mt-8 w-8 h-8 motion-safe:animate-spin text-[var(--pog-gold)]/70"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -140,12 +140,18 @@ export default function LoginPage() {
             </form>
           </Form>
           <div className="flex flex-col gap-2 text-sm mt-6">
-            <Link href="/forgot-password" className="text-muted-foreground hover:underline">
+            <Link
+              href="/forgot-password"
+              className="text-muted-foreground hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+            >
               パスワードをお忘れですか？
             </Link>
             <p className="text-muted-foreground">
               アカウントをお持ちでない方は{' '}
-              <Link href="/signup" className="font-medium hover:underline">
+              <Link
+                href="/signup"
+                className="font-medium hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+              >
                 サインアップ
               </Link>
             </p>
