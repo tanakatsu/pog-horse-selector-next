@@ -71,36 +71,35 @@ export default function HorseSearchInput({
 
   return (
     <div className="relative w-full max-w-md">
-      <Command
-        shouldFilter={false}
-        className="rounded-lg border shadow-none [&_[cmdk-input-wrapper]]:border-0 [&_[cmdk-input-wrapper]]:px-0"
-        aria-disabled={isDisabled}
-      >
-        <div className="flex items-center border-b px-3">
-          <CommandInput
-            placeholder="母馬名で検索…"
-            value={query}
-            onValueChange={handleInputChange}
-            disabled={isDisabled}
-            onFocus={() => {
-              if (query.length > 0) setOpen(true)
-            }}
-            onBlur={() => {
-              // Delay to allow click events on suggestions to fire before closing
-              blurTimerRef.current = setTimeout(() => setOpen(false), 150)
-            }}
-            className="flex-1 border-0 shadow-none focus-visible:ring-0 h-10"
-          />
-          <span className="text-xs text-muted-foreground/60 tabular-nums whitespace-nowrap pl-2">
-            {catalogue.length}頭
-          </span>
-        </div>
+      <Command shouldFilter={false} className="shadow-none bg-transparent">
+        <CommandInput
+          placeholder="母馬名で検索…"
+          value={query}
+          onValueChange={handleInputChange}
+          disabled={isDisabled}
+          onFocus={() => {
+            if (query.length > 0) setOpen(true)
+          }}
+          onBlur={() => {
+            // Delay to allow click events on suggestions to fire before closing
+            blurTimerRef.current = setTimeout(() => setOpen(false), 150)
+          }}
+        />
         {open && (
           <CommandList>
             {suggestions.length === 0 ? (
               <CommandEmpty>
                 <p className="mb-2">見つかりません</p>
-                <Button type="button" variant="outline" size="sm" onClick={handleManualEntry}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={handleManualEntry}
+                  onMouseDown={(e) => {
+                    // Prevent input blur so the onBlur timer doesn't close the list before onClick fires
+                    e.preventDefault()
+                  }}
+                >
                   手動で登録
                 </Button>
               </CommandEmpty>
@@ -133,6 +132,10 @@ export default function HorseSearchInput({
           </CommandList>
         )}
       </Command>
+      {/* top-[13px]: CommandInput wrapper has p-1(4px) + Command p-1(4px) = 8px offset, InputGroup h-8(32px) center at 24px, text-xs ~18px line-height -> (24-18/2)≈15px */}
+      <span className="absolute right-3 top-[15px] text-xs text-muted-foreground/60 tabular-nums whitespace-nowrap pointer-events-none">
+        {catalogue.length}頭
+      </span>
     </div>
   )
 }
