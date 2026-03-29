@@ -76,15 +76,25 @@ const HorseTable = memo(function HorseTable({ horses, totalHorseCount, onEdit, o
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <p className="text-sm text-muted-foreground">
-          全オーナー合計:{' '}
-          <span className="font-semibold text-foreground tabular-nums">{totalHorseCount}頭</span>
-        </p>
-        <p className="text-sm text-muted-foreground">
-          このオーナー:{' '}
-          <span className="font-semibold text-foreground tabular-nums">{horses.length}頭</span>
-        </p>
+      <div className="grid grid-cols-2 gap-3">
+        <div className="rounded-xl bg-[var(--pog-green)] text-white p-4">
+          <p className="text-white/60 text-xs uppercase tracking-wider">全オーナー合計</p>
+          <p className="text-3xl font-serif font-bold text-[var(--pog-gold)] mt-1 tabular-nums">
+            {totalHorseCount}
+            <span className="text-sm font-sans font-normal ml-1 text-white/70">頭</span>
+          </p>
+        </div>
+        <div className="rounded-xl border border-[var(--pog-gold)]/30 bg-[var(--pog-gold-subtle)] p-4">
+          <p className="text-[var(--pog-green)]/60 text-xs uppercase tracking-wider">
+            このオーナー
+          </p>
+          <p className="text-3xl font-serif font-bold text-[var(--pog-green)] mt-1 tabular-nums">
+            {horses.length}
+            <span className="text-sm font-sans font-normal ml-1 text-[var(--pog-green)]/60">
+              頭
+            </span>
+          </p>
+        </div>
       </div>
 
       <Input
@@ -96,13 +106,13 @@ const HorseTable = memo(function HorseTable({ horses, totalHorseCount, onEdit, o
 
       <Table>
         <TableHeader>
-          <TableRow>
-            <TableHead>No</TableHead>
-            <TableHead>馬名</TableHead>
-            <TableHead>父</TableHead>
-            <TableHead>母</TableHead>
-            <TableHead>NetkeibaID</TableHead>
-            <TableHead>操作</TableHead>
+          <TableRow className="bg-[var(--pog-green)] hover:bg-[var(--pog-green)]">
+            <TableHead className="text-white/80 font-medium">No</TableHead>
+            <TableHead className="text-white/80 font-medium">馬名</TableHead>
+            <TableHead className="text-white/80 font-medium">父</TableHead>
+            <TableHead className="text-white/80 font-medium">母</TableHead>
+            <TableHead className="text-white/80 font-medium">NetkeibaID</TableHead>
+            <TableHead className="text-white/80 font-medium">操作</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -116,7 +126,10 @@ const HorseTable = memo(function HorseTable({ horses, totalHorseCount, onEdit, o
             paged.map((horse) => (
               <TableRow key={horse.id}>
                 <TableCell>{horse.po_order_no}</TableCell>
-                <TableCell className="max-w-[12rem] truncate" title={horse.name}>
+                <TableCell
+                  className="max-w-[12rem] truncate font-medium text-[var(--pog-green)]"
+                  title={horse.name}
+                >
                   {horse.name}
                 </TableCell>
                 <TableCell className="max-w-[12rem] truncate" title={horse.sire}>

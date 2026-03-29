@@ -130,13 +130,13 @@ describe('HorseSearchInput', () => {
     expect(screen.queryByText('キズナメア別年')).not.toBeInTheDocument()
   })
 
-  it('対象年度のカタログ頭数が表示される', () => {
+  it('対象年度のカタログ頭数が検索ボックス内に表示される', () => {
     usePogStore.setState({ owners: [makeOwner()] })
 
     render(<HorseSearchInput catalogue={catalogue} onSelect={vi.fn()} selectedMares={[]} />)
 
-    // 2027年度POG対象（horse_idが2025で始まる）馬は6頭（テストデータ）
-    expect(screen.getByText('2027年度カタログ: 6頭')).toBeInTheDocument()
+    // カタログ頭数が検索ボックス内に表示される
+    expect(screen.getByText('6頭')).toBeInTheDocument()
   })
 
   it('サジェスト項目を選択するとonSelectが呼ばれる', async () => {

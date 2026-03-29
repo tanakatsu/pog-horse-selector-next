@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { ChevronRight } from 'lucide-react'
+import { ChevronRight, Users } from 'lucide-react'
 import { useShallow } from 'zustand/react/shallow'
 import { usePogStore, sortedOwners, ownerHorseCount } from '@/store/pogStore'
 
@@ -20,7 +20,15 @@ export default function OwnerList() {
 
   if (owners.length === 0) {
     return (
-      <div className="text-center text-muted-foreground py-8">オーナーが登録されていません</div>
+      <div className="py-16 text-center">
+        <div className="w-14 h-14 rounded-full bg-[var(--pog-green)]/8 flex items-center justify-center mx-auto mb-4">
+          <Users className="w-7 h-7 text-[var(--pog-green)]/40" />
+        </div>
+        <p className="text-sm text-muted-foreground">オーナーを登録すると馬を指名できます</p>
+        <p className="text-xs text-muted-foreground/60 mt-1">
+          「オーナー管理」でオーナーを追加してください
+        </p>
+      </div>
     )
   }
 

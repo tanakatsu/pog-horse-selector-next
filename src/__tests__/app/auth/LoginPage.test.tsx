@@ -20,16 +20,16 @@ describe('LoginPage', () => {
     expect(screen.getByText(APP_TITLE)).toBeInTheDocument()
   })
 
-  it('ログインフォームのCardTitleが表示される', () => {
+  it('ログインフォームの見出しが表示される', () => {
     render(<LoginPage />)
-    const cardTitle = screen.getByText('ログイン', { selector: '[data-slot="card-title"]' })
-    expect(cardTitle).toBeInTheDocument()
+    const heading = screen.getByText('ログイン', { selector: 'h1' })
+    expect(heading).toBeInTheDocument()
   })
 
-  it('アプリタイトルはCardTitleより前に表示される', () => {
+  it('アプリタイトルは見出しより前に表示される', () => {
     render(<LoginPage />)
     const appTitle = screen.getByText(APP_TITLE)
-    const formTitle = screen.getByText('ログイン', { selector: '[data-slot="card-title"]' })
+    const formTitle = screen.getByText('ログイン', { selector: 'h1' })
     expect(
       appTitle.compareDocumentPosition(formTitle) & Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy()

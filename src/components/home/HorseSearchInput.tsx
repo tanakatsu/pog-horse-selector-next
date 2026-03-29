@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useMemo } from 'react'
 import { usePogStore } from '@/store/pogStore'
 import type { CatalogHorse } from '@/types'
-import { cn, getTargetYear } from '@/lib/utils'
+import { cn } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import {
   Command,
@@ -41,7 +41,6 @@ export default function HorseSearchInput({
   }, [])
 
   const isDisabled = owners.length === 0 || loading
-  const targetYear = String(getTargetYear())
 
   const suggestions = useMemo(
     () =>
@@ -72,27 +71,30 @@ export default function HorseSearchInput({
 
   return (
     <div className="relative w-full max-w-md">
-      <p className="text-xs text-muted-foreground mb-1">
-        {targetYear}年度カタログ: {catalogue.length}頭
-      </p>
       <Command
         shouldFilter={false}
-        className="rounded-lg border shadow-none"
+        className="rounded-lg border shadow-none [&_[cmdk-input-wrapper]]:border-0 [&_[cmdk-input-wrapper]]:px-0"
         aria-disabled={isDisabled}
       >
-        <CommandInput
-          placeholder="母馬名で検索…"
-          value={query}
-          onValueChange={handleInputChange}
-          disabled={isDisabled}
-          onFocus={() => {
-            if (query.length > 0) setOpen(true)
-          }}
-          onBlur={() => {
-            // Delay to allow click events on suggestions to fire before closing
-            blurTimerRef.current = setTimeout(() => setOpen(false), 150)
-          }}
-        />
+        <div className="flex items-center border-b px-3">
+          <CommandInput
+            placeholder="母馬名で検索…"
+            value={query}
+            onValueChange={handleInputChange}
+            disabled={isDisabled}
+            onFocus={() => {
+              if (query.length > 0) setOpen(true)
+            }}
+            onBlur={() => {
+              // Delay to allow click events on suggestions to fire before closing
+              blurTimerRef.current = setTimeout(() => setOpen(false), 150)
+            }}
+            className="flex-1 border-0 shadow-none focus-visible:ring-0 h-10"
+          />
+          <span className="text-xs text-muted-foreground/60 tabular-nums whitespace-nowrap pl-2">
+            {catalogue.length}頭
+          </span>
+        </div>
         {open && (
           <CommandList>
             {suggestions.length === 0 ? (

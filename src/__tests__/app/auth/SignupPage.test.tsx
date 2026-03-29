@@ -21,11 +21,9 @@ describe('SignupPage', () => {
     expect(screen.getByText(APP_TITLE)).toBeInTheDocument()
   })
 
-  it('アカウント作成フォームのCardTitleが表示される', () => {
+  it('アカウント作成フォームの見出しが表示される', () => {
     render(<SignupPage />)
-    expect(
-      screen.getByText('アカウント作成', { selector: '[data-slot="card-title"]' }),
-    ).toBeInTheDocument()
+    expect(screen.getByText('アカウント作成', { selector: 'h1' })).toBeInTheDocument()
   })
 
   it('メール確認画面でもアプリタイトルが表示される', async () => {
@@ -38,8 +36,6 @@ describe('SignupPage', () => {
     await user.click(screen.getByRole('button', { name: 'アカウントを作成' }))
 
     expect(await screen.findByText(APP_TITLE)).toBeInTheDocument()
-    expect(
-      screen.getByText('確認メールを送信しました', { selector: '[data-slot="card-title"]' }),
-    ).toBeInTheDocument()
+    expect(screen.getByText('確認メールを送信しました', { selector: 'h1' })).toBeInTheDocument()
   })
 })

@@ -1,6 +1,6 @@
 'use client'
 
-import { Pencil, Trash2 } from 'lucide-react'
+import { Pencil, Trash2, Users } from 'lucide-react'
 import { useShallow } from 'zustand/react/shallow'
 import { usePogStore, sortedOwners, ownerHorseCount } from '@/store/pogStore'
 import type { Owner } from '@/types'
@@ -37,8 +37,11 @@ export default function OwnerTable({ onEdit, onDelete }: Props) {
       <TableBody>
         {owners.length === 0 ? (
           <TableRow>
-            <TableCell colSpan={4} className="text-center text-muted-foreground">
-              オーナーが登録されていません
+            <TableCell colSpan={4} className="py-16 text-center">
+              <div className="w-12 h-12 rounded-full bg-[var(--pog-green)]/8 flex items-center justify-center mx-auto mb-3">
+                <Users className="w-6 h-6 text-[var(--pog-green)]/40" />
+              </div>
+              <p className="text-sm text-muted-foreground">オーナーが登録されていません</p>
             </TableCell>
           </TableRow>
         ) : (

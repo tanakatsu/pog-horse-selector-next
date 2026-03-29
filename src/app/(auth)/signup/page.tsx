@@ -8,7 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { signupSchema, type SignupInput, getAuthErrorMessage } from '@/lib/validations/auth'
 import { APP_TITLE } from '@/lib/constants'
 import { getSupabaseClient } from '@/lib/supabase/client'
-import { Card, CardHeader, CardContent, CardFooter, CardTitle } from '@/components/ui/card'
+import BrandPanel from '@/components/auth/BrandPanel'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -51,113 +51,113 @@ export default function SignupPage() {
 
   if (submitted) {
     return (
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <p className="text-sm font-semibold tracking-widest text-muted-foreground uppercase">
-            {APP_TITLE}
-          </p>
-          <CardTitle className="text-xl font-medium">確認メールを送信しました</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-muted-foreground">
-            ご登録のメールアドレスに確認メールを送信しました。
-            メール内のリンクをクリックして登録を完了してください。
-          </p>
-        </CardContent>
-        <CardFooter className="text-sm">
-          <Link href="/login" className="text-muted-foreground hover:underline">
-            ログインに戻る
-          </Link>
-        </CardFooter>
-      </Card>
+      <div className="min-h-screen w-full grid lg:grid-cols-2">
+        <BrandPanel />
+        <div className="flex items-center justify-center bg-[var(--pog-cream)] p-8">
+          <div className="w-full max-w-sm">
+            <p className="lg:hidden text-xs font-semibold tracking-widest text-[var(--pog-green)] uppercase mb-6">
+              {APP_TITLE}
+            </p>
+            <h1 className="font-serif text-2xl text-[var(--pog-green)] mb-4">
+              確認メールを送信しました
+            </h1>
+            <p className="text-sm text-muted-foreground mb-6">
+              ご登録のメールアドレスに確認メールを送信しました。
+              メール内のリンクをクリックして登録を完了してください。
+            </p>
+            <Link href="/login" className="text-sm text-muted-foreground hover:underline">
+              ログインに戻る
+            </Link>
+          </div>
+        </div>
+      </div>
     )
   }
 
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader>
-        <p className="text-sm font-semibold tracking-widest text-muted-foreground uppercase">
-          {APP_TITLE}
-        </p>
-        <CardTitle className="text-xl font-medium">アカウント作成</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>メールアドレス</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="email"
-                      placeholder="example@email.com"
-                      autoComplete="email"
-                      spellCheck={false}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+    <div className="min-h-screen w-full grid lg:grid-cols-2">
+      <BrandPanel />
+      <div className="flex items-center justify-center bg-[var(--pog-cream)] p-8">
+        <div className="w-full max-w-sm">
+          <p className="lg:hidden text-xs font-semibold tracking-widest text-[var(--pog-green)] uppercase mb-6">
+            {APP_TITLE}
+          </p>
+          <h1 className="font-serif text-2xl text-[var(--pog-green)] mb-8">アカウント作成</h1>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>メールアドレス</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="email"
+                        placeholder="example@email.com"
+                        autoComplete="email"
+                        spellCheck={false}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>パスワード</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="6文字以上"
+                        autoComplete="new-password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>パスワード（確認）</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="password"
+                        placeholder="パスワードを再入力"
+                        autoComplete="new-password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {rootError && (
+                <p className="text-sm font-medium text-destructive" aria-live="polite">
+                  {rootError}
+                </p>
               )}
-            />
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>パスワード</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="6文字以上"
-                      autoComplete="new-password"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="confirmPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>パスワード（確認）</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="パスワードを再入力"
-                      autoComplete="new-password"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            {rootError && (
-              <p className="text-sm font-medium text-destructive" aria-live="polite">
-                {rootError}
-              </p>
-            )}
-            <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-              {form.formState.isSubmitting ? '登録中…' : 'アカウントを作成'}
-            </Button>
-          </form>
-        </Form>
-      </CardContent>
-      <CardFooter className="text-sm">
-        <p className="text-muted-foreground">
-          すでにアカウントをお持ちの方は{' '}
-          <Link href="/login" className="font-medium hover:underline">
-            ログイン
-          </Link>
-        </p>
-      </CardFooter>
-    </Card>
+              <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+                {form.formState.isSubmitting ? '登録中…' : 'アカウントを作成'}
+              </Button>
+            </form>
+          </Form>
+          <p className="text-sm text-muted-foreground mt-6">
+            すでにアカウントをお持ちの方は{' '}
+            <Link href="/login" className="font-medium hover:underline">
+              ログイン
+            </Link>
+          </p>
+        </div>
+      </div>
+    </div>
   )
 }

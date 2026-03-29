@@ -4,9 +4,13 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { forgotPasswordSchema, type ForgotPasswordInput } from '@/lib/validations/auth'
+import {
+  forgotPasswordSchema,
+  type ForgotPasswordInput,
+  getAuthErrorMessage,
+} from '@/lib/validations/auth'
 import { getSupabaseClient } from '@/lib/supabase/client'
-import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card'
+import BrandPanel from '@/components/auth/BrandPanel'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -34,7 +38,7 @@ export default function ForgotPasswordPage() {
       redirectTo: window.location.origin + '/auth/callback?next=/reset-password',
     })
     if (error) {
-      setRootError(error.message)
+      setRootError(getAuthErrorMessage(error))
       return
     }
     setSubmitted(true)
@@ -42,67 +46,71 @@ export default function ForgotPasswordPage() {
 
   if (submitted) {
     return (
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <h2 className="text-xl font-medium">メールを送信しました</h2>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-muted-foreground">
-            パスワードリセット用のメールを送信しました。メールのリンクからパスワードをリセットしてください。
-          </p>
-        </CardContent>
-        <CardFooter className="text-sm">
-          <Link href="/login" className="text-muted-foreground hover:underline">
-            ログインに戻る
-          </Link>
-        </CardFooter>
-      </Card>
+      <div className="min-h-screen w-full grid lg:grid-cols-2">
+        <BrandPanel />
+        <div className="flex items-center justify-center bg-[var(--pog-cream)] p-8">
+          <div className="w-full max-w-sm">
+            <h1 className="font-serif text-2xl text-[var(--pog-green)] mb-4">
+              メールを送信しました
+            </h1>
+            <p className="text-sm text-muted-foreground mb-6">
+              パスワードリセット用のメールを送信しました。メールのリンクからパスワードをリセットしてください。
+            </p>
+            <Link href="/login" className="text-sm text-muted-foreground hover:underline">
+              ログインに戻る
+            </Link>
+          </div>
+        </div>
+      </div>
     )
   }
 
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader>
-        <h2 className="text-xl font-medium">パスワードをお忘れですか？</h2>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>メールアドレス</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="email"
-                      placeholder="example@email.com"
-                      autoComplete="email"
-                      spellCheck={false}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+    <div className="min-h-screen w-full grid lg:grid-cols-2">
+      <BrandPanel />
+      <div className="flex items-center justify-center bg-[var(--pog-cream)] p-8">
+        <div className="w-full max-w-sm">
+          <h1 className="font-serif text-2xl text-[var(--pog-green)] mb-8">
+            パスワードをお忘れですか？
+          </h1>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>メールアドレス</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="email"
+                        placeholder="example@email.com"
+                        autoComplete="email"
+                        spellCheck={false}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {rootError && (
+                <p className="text-sm font-medium text-destructive" aria-live="polite">
+                  {rootError}
+                </p>
               )}
-            />
-            {rootError && (
-              <p className="text-sm font-medium text-destructive" aria-live="polite">
-                {rootError}
-              </p>
-            )}
-            <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-              {form.formState.isSubmitting ? '送信中…' : 'リセットメールを送信'}
-            </Button>
-          </form>
-        </Form>
-      </CardContent>
-      <CardFooter className="text-sm">
-        <Link href="/login" className="text-muted-foreground hover:underline">
-          ログインに戻る
-        </Link>
-      </CardFooter>
-    </Card>
+              <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+                {form.formState.isSubmitting ? '送信中…' : 'リセットメールを送信'}
+              </Button>
+            </form>
+          </Form>
+          <div className="mt-6">
+            <Link href="/login" className="text-sm text-muted-foreground hover:underline">
+              ログインに戻る
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
