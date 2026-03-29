@@ -7,9 +7,10 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
+  --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
+  --font-serif: var(--font-noto-serif-jp);
+  --font-heading: var(--font-noto-serif-jp);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -49,20 +50,28 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
+  /* POG Brand */
+  --pog-green: oklch(0.24 0.08 157);
+  --pog-gold: oklch(0.73 0.12 78);
+  --pog-cream: oklch(0.97 0.01 82);
+  --pog-gold-subtle: oklch(0.73 0.12 78 / 0.12);
+
+  /* shadcn primary をブランドカラーに差し替え */
+  --primary: var(--pog-green);
+  --primary-foreground: oklch(0.985 0 0);
+  --background: var(--pog-cream);
+  --accent: var(--pog-gold-subtle);
+  --accent-foreground: var(--pog-green);
+
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
@@ -84,6 +93,12 @@
 }
 
 .dark {
+  /* POG Brand (dark mode overrides) */
+  --pog-green: oklch(0.32 0.08 157);
+  --pog-gold: oklch(0.78 0.12 78);
+  --pog-cream: oklch(0.18 0.01 82);
+  --pog-gold-subtle: oklch(0.78 0.12 78 / 0.15);
+
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
@@ -126,6 +141,11 @@
   }
   html {
     @apply font-sans;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-heading, var(--font-sans));
   }
   button,
   [role='button'],
