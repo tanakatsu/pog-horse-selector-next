@@ -41,6 +41,9 @@
     "zustand": "^5.0.12"
   },
   "devDependencies": {
+    "cheerio": "^1.0.0",
+    "iconv-lite": "^0.6.3",
+    "yargs": "^17.7.2",
     "@playwright/test": "^1.58.2",
     "@tailwindcss/postcss": "^4",
     "@testing-library/jest-dom": "^6.9.1",
