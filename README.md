@@ -167,7 +167,25 @@ NEXT_PUBLIC_TARGET_YEAR=2026
 カタログのフィルタリングは `TARGET_YEAR - 2` 年産まれの馬が対象です。
 例: 2026年度POG → 2024年産まれ（`id` の先頭4桁が `2024`）。
 
-> サンプルデータとして `src/data/horse_catalogue.json` が同梱されています。
+サンプルデータとして `src/data/horse_catalogue.json` が同梱されています。
+
+#### 馬カタログの更新方法
+
+カタログデータは `scripts/create_catalogue.js` で自動生成できます。
+Netkeiba から最新の馬データを取得し、`src/data/horse_catalogue.json` を上書きします。
+
+```bash
+node scripts/create_catalogue.js --age 2 -o src/data/horse_catalogue.json
+```
+
+| オプション       | デフォルト            | 説明                                 |
+| ---------------- | --------------------- | ------------------------------------ |
+| `--age`          | `2`                   | 対象年齢（POGは2歳馬）               |
+| `-o`, `--output` | `horse_catalogue.json`| 出力ファイルパス                     |
+| `-n`             | —                     | 取得件数の上限（省略時は全件取得）   |
+
+スクリプトはページをまたいで全件取得します（1ページ100件、ページ間に1秒のウェイト）。
+完了後、アプリをビルドし直すことでカタログが反映されます。
 
 ### 7. 開発サーバーを起動
 
