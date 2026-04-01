@@ -116,6 +116,100 @@ describe('HorseTable', () => {
     expect(screen.getByRole('button', { name: '次へ' })).toBeInTheDocument()
   })
 
+  it('年度条件を満たすhorse_idにはNetkeibaリンクが表示される', () => {
+    // year=2026 の馬、horse_idの先頭4桁が2024(=2026-2)の場合リンクを表示
+    const horsesWithValidId: Horse[] = [
+      {
+        id: 10,
+        user_id: 'u1',
+        year: 2026,
+        horse_id: '2024000001',
+        name: 'リンクあり馬',
+        sire: '父',
+        mare: '母',
+        owner_id: 1,
+        po_order_no: 1,
+        created_at: '',
+      },
+    ]
+    render(
+      <HorseTable
+        horses={horsesWithValidId}
+        totalHorseCount={1}
+        onEdit={vi.fn()}
+        onDelete={vi.fn()}
+      />,
+    )
+
+    const link = screen.getByRole('link', { name: /2024000001/ })
+    expect(link).toHaveAttribute('href', 'https://db.netkeiba.com/horse/2024000001/')
+    expect(link).toHaveAttribute('target', '_blank')
+    expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+  })
+
+  it('年度条件を満たさないhorse_idにはリンクが表示されない', () => {
+    // year=2025 の馬、horse_idの先頭4桁が2025だが2025-2=2023なので条件不一致
+    render(
+      <HorseTable horses={mockHorses} totalHorseCount={3} onEdit={vi.fn()} onDelete={vi.fn()} />,
+    )
+
+    expect(screen.queryByRole('link')).not.toBeInTheDocument()
+    expect(screen.getByText('2025000001')).toBeInTheDocument()
+    expect(screen.getByText('2025000002')).toBeInTheDocument()
+  })
+
+  it('horse_idがnullの場合はハイフンが表示される', () => {
+    const horseWithNullId: Horse[] = [
+      {
+        id: 11,
+        user_id: 'u1',
+        year: 2026,
+        horse_id: null,
+        name: 'IDなし馬',
+        sire: '父',
+        mare: '母',
+        owner_id: 1,
+        po_order_no: 1,
+        created_at: '',
+      },
+    ]
+    render(
+      <HorseTable
+        horses={horseWithNullId}
+        totalHorseCount={1}
+        onEdit={vi.fn()}
+        onDelete={vi.fn()}
+      />,
+    )
+
+    expect(screen.getByText('-')).toBeInTheDocument()
+    expect(screen.queryByRole('link')).not.toBeInTheDocument()
+  })
+
+  it.each([
+    { horse_id: '202400001', desc: '9桁（桁数不足）' },
+    { horse_id: '20240000011', desc: '11桁（桁数超過）' },
+    { horse_id: '2024abcdef', desc: '非数字混入' },
+    { horse_id: '', desc: '空文字' },
+  ])('horse_idが不正な形式($desc)の場合はリンクが表示されない', ({ horse_id }) => {
+    const horse: Horse[] = [
+      {
+        id: 20,
+        user_id: 'u1',
+        year: 2026,
+        horse_id: horse_id || null,
+        name: '不正ID馬',
+        sire: '父',
+        mare: '母',
+        owner_id: 1,
+        po_order_no: 1,
+        created_at: '',
+      },
+    ]
+    render(<HorseTable horses={horse} totalHorseCount={1} onEdit={vi.fn()} onDelete={vi.fn()} />)
+    expect(screen.queryByRole('link')).not.toBeInTheDocument()
+  })
+
   it('編集・削除ボタンが各行にある', () => {
     render(
       <HorseTable horses={mockHorses} totalHorseCount={3} onEdit={vi.fn()} onDelete={vi.fn()} />,

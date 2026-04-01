@@ -17,6 +17,16 @@ import {
 
 const PAGE_SIZE = 10
 
+// horse_idが当該年度産の馬（先頭4桁 = year - 2）であるか判定する
+// horse.yearを使うことでレコード単位の年度と一致させる
+function isNetkeibaLinkable(horse: { horse_id: string | null; year: number }): boolean {
+  return (
+    horse.horse_id !== null &&
+    /^\d{10}$/.test(horse.horse_id) &&
+    horse.horse_id.slice(0, 4) === String(horse.year - 2)
+  )
+}
+
 type Props = {
   horses: Horse[]
   totalHorseCount: number
@@ -138,7 +148,21 @@ const HorseTable = memo(function HorseTable({ horses, totalHorseCount, onEdit, o
                 <TableCell className="max-w-[12rem] truncate" title={horse.mare}>
                   {horse.mare}
                 </TableCell>
-                <TableCell>{horse.horse_id ?? '-'}</TableCell>
+                <TableCell>
+                  {isNetkeibaLinkable(horse) ? (
+                    <a
+                      href={`https://db.netkeiba.com/horse/${horse.horse_id}/`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[var(--pog-green)] underline hover:opacity-80"
+                    >
+                      {horse.horse_id}
+                      <span className="sr-only">（外部サイト、新しいタブで開きます）</span>
+                    </a>
+                  ) : (
+                    (horse.horse_id ?? '-')
+                  )}
+                </TableCell>
                 <TableCell>
                   <div className="flex gap-2">
                     <Button
