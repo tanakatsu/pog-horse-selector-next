@@ -5,6 +5,8 @@ const fs = require('fs')
 const path = require('path')
 const iconv = require('iconv-lite')
 const cheerio = require('cheerio')
+const ora = require('ora')
+const chalk = require('chalk')
 
 const BASE_URL = 'https://db.netkeiba.com'
 const USER_AGENT =
@@ -58,9 +60,9 @@ function buildCatalogue(horses) {
   const valid = horses.filter((h) => {
     const ok = h.name && h.sire && h.mare
     if (!ok) {
-      if (!h.name) console.log(`Missing name: ${h.id}`)
-      if (!h.sire) console.log(`Missing sire: ${h.id}`)
-      if (!h.mare) console.log(`Missing mare: ${h.id}`)
+      if (!h.name) console.warn(chalk.yellow(`\u26a0  Missing name: ${h.id}`))
+      if (!h.sire) console.warn(chalk.yellow(`\u26a0  Missing sire: ${h.id}`))
+      if (!h.mare) console.warn(chalk.yellow(`\u26a0  Missing mare: ${h.id}`))
     }
     return ok
   })
@@ -95,39 +97,62 @@ async function main() {
   const outputPath = path.resolve(output)
   const baseParams = { pid: 'horse_list', under_age: age, over_age: age, list: 100, sort: 'prize' }
 
-  const firstHtml = await fetchHtml({ ...baseParams, page: 1 })
-  const lastPageNo = getLastPageNo(firstHtml)
-  const seen = new Set()
-  const allHorses = []
+  let spinner = ora(chalk.blue('Fetching page 1/...')).start()
 
-  const addHorses = (horses) => {
-    for (const h of horses) {
-      if (!seen.has(h.id)) {
-        seen.add(h.id)
-        allHorses.push(h)
+  try {
+    const firstHtml = await fetchHtml({ ...baseParams, page: 1 })
+    const lastPageNo = getLastPageNo(firstHtml)
+    const seen = new Set()
+    const allHorses = []
+
+    const addHorses = (horses) => {
+      for (const h of horses) {
+        if (!seen.has(h.id)) {
+          seen.add(h.id)
+          allHorses.push(h)
+        }
       }
     }
-  }
 
-  addHorses(parseHorseResults(firstHtml))
-  console.log(`get ${allHorses.length} (${allHorses.length}) / page 1 of ${lastPageNo}`)
+    addHorses(parseHorseResults(firstHtml))
 
-  for (let page = 2; page <= lastPageNo; page++) {
-    if (maxSample !== null && allHorses.length >= maxSample) break
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    const html = await fetchHtml({ ...baseParams, page })
-    const before = allHorses.length
-    addHorses(parseHorseResults(html))
-    console.log(
-      `get ${allHorses.length - before} (${allHorses.length}) / page ${page} of ${lastPageNo}`,
+    const pageWidth = String(lastPageNo).length
+    const pageStr = (p) => String(p).padStart(pageWidth)
+    const totalStr = (n) => String(n).padStart(6)
+
+    spinner.succeed(
+      chalk.green(
+        `Page ${pageStr(1)}/${lastPageNo} \u2014 +${String(allHorses.length).padStart(3)} horses (${totalStr(allHorses.length)} total)`,
+      ),
     )
+
+    for (let page = 2; page <= lastPageNo; page++) {
+      if (maxSample !== null && allHorses.length >= maxSample) break
+      spinner = ora(chalk.blue(`Fetching page ${pageStr(page)}/${lastPageNo}...`)).start()
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+      const html = await fetchHtml({ ...baseParams, page })
+      const before = allHorses.length
+      addHorses(parseHorseResults(html))
+      const added = allHorses.length - before
+      spinner.succeed(
+        chalk.green(
+          `Page ${pageStr(page)}/${lastPageNo} \u2014 +${String(added).padStart(3)} horses (${totalStr(allHorses.length)} total)`,
+        ),
+      )
+    }
+
+    const horses = maxSample !== null ? allHorses.slice(0, maxSample) : allHorses
+    const data = buildCatalogue(horses)
+
+    fs.writeFileSync(outputPath, JSON.stringify(data, null, 2))
+
+    console.log(
+      chalk.green(`\u2714 Saved ${String(data.length).padStart(6)} horses \u2192 ${outputPath}`),
+    )
+  } catch (err) {
+    spinner.fail(chalk.red(String(err.message || err)))
+    throw err
   }
-
-  const horses = maxSample !== null ? allHorses.slice(0, maxSample) : allHorses
-  const data = buildCatalogue(horses)
-
-  fs.writeFileSync(outputPath, JSON.stringify(data, null, 2))
-  console.log(`Total: ${data.length} horses saved to ${outputPath}`)
 }
 
 if (require.main === module) {
