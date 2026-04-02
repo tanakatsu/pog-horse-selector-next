@@ -60,7 +60,7 @@
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "Output ONLY a JSON object. No markdown. No code fences. No explanation. No other text whatsoever.\nIf there are no incomplete tasks in this conversation, output exactly: {\"decision\":\"proceed\"}\nIf there are incomplete tasks, output exactly: {\"decision\":\"block\",\"reason\":\"<brief description of what remains>\"}\nYour entire response must be valid JSON and nothing else."
+            "prompt": "Output ONLY a JSON object. No markdown. No code fences. No explanation. No other text whatsoever.\nIf there are no incomplete tasks in this conversation, output exactly: {\"ok\":true}\nIf there are incomplete tasks, output exactly: {\"ok\":false,\"reason\":\"<brief description of what remains>\"}\nYour entire response must be valid JSON and nothing else."
           }
         ]
       }
