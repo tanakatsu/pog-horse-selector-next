@@ -154,7 +154,7 @@ const HorseTable = memo(function HorseTable({ horses, totalHorseCount, onEdit, o
                       href={`https://db.netkeiba.com/horse/${horse.horse_id}/`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-[var(--pog-green)] underline hover:opacity-80"
+                      className="text-[var(--pog-green)] hover:opacity-80"
                     >
                       {horse.horse_id}
                       <span className="sr-only">（外部サイト、新しいタブで開きます）</span>
