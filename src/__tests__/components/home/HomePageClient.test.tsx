@@ -4,6 +4,8 @@ import userEvent from '@testing-library/user-event'
 import { usePogStore } from '@/store/pogStore'
 import type { CatalogHorse, Horse, Owner } from '@/types'
 
+vi.mock('@/data/horse_catalogue.json', () => ({ default: [] }))
+
 // Mock child components to isolate HomePageClient logic
 vi.mock('@/components/home/HorseSearchInput', () => ({
   default: ({ onSelect }: { onSelect: (horse: CatalogHorse | null) => void }) => (
@@ -77,7 +79,7 @@ beforeEach(() => {
 describe('HomePageClient', () => {
   it('未指名の馬を選択すると HorseRegisterDialog が開く', async () => {
     const user = userEvent.setup()
-    render(<HomePageClient catalogue={[mockCatalogHorse, mockDuplicateHorse]} />)
+    render(<HomePageClient />)
 
     await user.click(screen.getByText('select-horse'))
 
@@ -87,7 +89,7 @@ describe('HomePageClient', () => {
 
   it('手動入力（null）を選択すると catalogHorse=null で HorseRegisterDialog が開く', async () => {
     const user = userEvent.setup()
-    render(<HomePageClient catalogue={[mockCatalogHorse]} />)
+    render(<HomePageClient />)
 
     await user.click(screen.getByText('manual-entry'))
 
@@ -103,7 +105,7 @@ describe('HomePageClient', () => {
       error: null,
     })
     const user = userEvent.setup()
-    render(<HomePageClient catalogue={[mockCatalogHorse, mockDuplicateHorse]} />)
+    render(<HomePageClient />)
 
     await user.click(screen.getByText('select-duplicate'))
 

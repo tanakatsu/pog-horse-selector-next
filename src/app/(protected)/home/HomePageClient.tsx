@@ -4,16 +4,17 @@ import { useState, useMemo, useCallback } from 'react'
 import { useShallow } from 'zustand/react/shallow'
 import { usePogStore, sortedOwners } from '@/store/pogStore'
 import type { CatalogHorse } from '@/types'
+import rawCatalogue from '@/data/horse_catalogue.json'
+import { getCatalogueYear } from '@/lib/utils'
 import HorseSearchInput from '@/components/home/HorseSearchInput'
 import OwnerList from '@/components/home/OwnerList'
 import HorseRegisterDialog from '@/components/home/HorseRegisterDialog'
 import ConflictAlertDialog from '@/components/home/ConflictAlertDialog'
 
-type Props = {
-  catalogue: CatalogHorse[]
-}
+const catalogueYear = String(getCatalogueYear())
+const catalogue = (rawCatalogue as CatalogHorse[]).filter((h) => h.id.startsWith(catalogueYear))
 
-export default function HomePageClient({ catalogue }: Props) {
+export default function HomePageClient() {
   const owners = usePogStore(useShallow(sortedOwners))
   const horses = usePogStore((state) => state.horses)
 
