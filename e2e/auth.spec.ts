@@ -1,4 +1,4 @@
-import { test, expect, type Page } from './fixtures'
+import { test, expect, type Page } from '@playwright/test'
 
 async function loginAsTestUser(page: Page) {
   const email = process.env['TEST_USER_EMAIL'] ?? ''

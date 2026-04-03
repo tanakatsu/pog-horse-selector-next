@@ -1,4 +1,4 @@
-import { test, expect, type Page } from './fixtures'
+import { test, expect, type Page } from '@playwright/test'
 
 async function loginAs(page: Page, email: string, password: string) {
   await page.goto('/login')

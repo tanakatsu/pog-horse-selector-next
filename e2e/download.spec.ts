@@ -1,4 +1,4 @@
-import { test, expect, type Page } from './fixtures'
+import { test, expect, type Page } from '@playwright/test'
 import { cleanupTestUserData } from './fixtures/cleanup'
 
 async function loginAsTestUser(page: Page) {
