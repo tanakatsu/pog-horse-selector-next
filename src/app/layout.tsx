@@ -20,7 +20,7 @@ const notoSerif = Noto_Serif_JP({
 })
 
 export const metadata: Metadata = {
-  title: 'POG馬選択',
+  title: 'POG HORSE SELECTOR',
   description: 'POGドラフト会議用馬選択アプリ',
 }
 
